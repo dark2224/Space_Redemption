@@ -12,8 +12,4 @@ UCLASS()
 class SPACE_REDEMPTION_API ASpace_RedemptionGameMode : public AGameMode
 {
 	GENERATED_BODY()
-	
-	
-	
-	
 };
