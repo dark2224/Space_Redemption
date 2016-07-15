@@ -115,3 +115,7 @@ $RECYCLE.BIN/
 #uproject
 *.uproject
 *.VC.db
+
+#unreal asset
+Content/Model/*
+Content/Particle/*
