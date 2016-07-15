@@ -9,7 +9,9 @@ UCLASS()
 class SPACE_REDEMPTION_API ATangibleActor : public AActor
 {
 	GENERATED_BODY()
-	
+protected:
+	UFUNCTION(BlueprintCallable, Category = "Updatingstat")
+	void Beingapproached(class UHand* param);
 public:	
 	// Sets default values for this actor's properties
 	ATangibleActor();

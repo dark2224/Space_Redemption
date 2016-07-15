@@ -7,12 +7,12 @@
 #pragma once
 
 #include "Components/SceneComponent.h"
-#include "TangibleActor.h"
+//#include "TangibleActor.h"
 #include "Hand.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class SPACE_REDEMPTION_API UHand : public UActorComponent
+class SPACE_REDEMPTION_API UHand : public USceneComponent
 {
 protected:
 	bool ReadyToContact;
