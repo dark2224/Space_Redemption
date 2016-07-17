@@ -19,7 +19,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Location)
 		FVector Hand_move_dirvec;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Location)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Location)
 	class UHand* RightHand;
 
 	// Called when the game starts or when spawned

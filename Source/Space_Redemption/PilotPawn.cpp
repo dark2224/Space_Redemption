@@ -35,6 +35,9 @@ APilotPawn::APilotPawn()
 
 	// 왼손 바이브 컨트롤러 위치
 	RightHand = CreateDefaultSubobject<UHand>(TEXT("RealWorld_RightHand"));
+	RightHand->SetupAttachment(RealArm);
+	RightHand->SetRelativeLocation(FVector(0, 0, 0));
+	RightHand->SetRelativeRotation(FQuat(FRotator(0, 0, 0)));
 	//Dev_HandMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DevLeftHand"));
 	//Dev_HandMesh->SetupAttachment(RealArm);
 
@@ -57,7 +60,7 @@ void APilotPawn::BeginPlay()
 void APilotPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+
 	//InputComponent->GetAxisValue("HandX");
 	Hand_move_dirvec.X = 3;
 
