@@ -1,31 +1,32 @@
-/*
-¼ÕÀ¸·Î ¸¸Áö°í »óÈ£ÀÛ¿ëÇÒ ¼ö ÀÖ´Â ¹°Ã¼µéÀÇ ºÎ¸ğ Å¬·¡½ºÀÔ´Ï´Ù.
+ï»¿/*
+ì†ìœ¼ë¡œ ë§Œì§€ê³  ìƒí˜¸ì‘ìš©í•  ìˆ˜ ìˆëŠ” ë¬¼ì²´ë“¤ì˜ ë¶€ëª¨ í´ë˜ìŠ¤ì…ë‹ˆë‹¤.
 */
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "InteractionStatus.h"
 #include "TangibleActor.generated.h"
+
 UCLASS()
 class SPACE_REDEMPTION_API ATangibleActor : public AActor
 {
 	GENERATED_BODY()
 protected:
-	// ¸Ş½¬¿¡ ´ëÇÑ ¼ÕÀÇ »ó´ëÀû À§Ä¡¿Í °¢µµ¸¦ ÀúÀåÇÕ´Ï´Ù. Set¸Ş¼­µå¸¦ ÅëÇØ ºí·çÇÁ¸°Æ®»ó¿¡¼­ ÃÊ±âÈ­ÇØÁà¾ß ÇÕ´Ï´Ù.
+	enum InteractionStatus Status;
+	// ë©”ì‰¬ì— ëŒ€í•œ ì†ì˜ ìƒëŒ€ì  ìœ„ì¹˜ì™€ ê°ë„ë¥¼ ì €ì¥í•©ë‹ˆë‹¤. Setë©”ì„œë“œë¥¼ í†µí•´ ë¸”ë£¨í”„ë¦°íŠ¸ìƒì—ì„œ ì´ˆê¸°í™”í•´ì¤˜ì•¼ í•©ë‹ˆë‹¤.
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 		class USceneComponent *DesiredHandTransform;
 	class UHand* TargetHand;
-	// ¼ÕÀÌ ¿ÀºêÁ§Æ®¿¡ ´Ù°¡°¥ ¶§ È£ÃâµÇ´Â ÇÔ¼öÀÔ´Ï´Ù. È£ÃâµÇ¾úÀ» ¶§ ¼ÕÀÌ »óÈ£ÀÛ¿ëÀ» ½ÃÀÛÇÏÁö´Â ¾ÊÁö¸¸
-	// ¼ÕÀÌ ¿ÀºêÁ§Æ®¿¡ °¡±î¿öÁü¿¡ µû¶ó ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ »óÈ£ÀÛ¿ë idle ¾Ö´Ï¸ŞÀÌ¼ÇÀ¸·Î ºí·»µùµË´Ï´Ù.
+	// ì†ì´ ì˜¤ë¸Œì íŠ¸ì— ë‹¤ê°€ê°ˆ ë•Œ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜ì…ë‹ˆë‹¤. í˜¸ì¶œë˜ì—ˆì„ ë•Œ ì†ì´ ìƒí˜¸ì‘ìš©ì„ ì‹œì‘í•˜ì§€ëŠ” ì•Šì§€ë§Œ
+	// ì†ì´ ì˜¤ë¸Œì íŠ¸ì— ê°€ê¹Œì›Œì§ì— ë”°ë¼ ì• ë‹ˆë©”ì´ì…˜ì´ ìƒí˜¸ì‘ìš© idle ì• ë‹ˆë©”ì´ì…˜ìœ¼ë¡œ ë¸”ë Œë”©ë©ë‹ˆë‹¤.
 	UFUNCTION(BlueprintCallable, Category = "Updatingstat")
-		virtual void Beingapproached(class UHand* param) { TargetHand = param; }
-	// ¼Õ°ú ¿ÀºêÁ§Æ®°¡ »óÈ£ÀÛ¿ëÀ» ½ÃÀÛÇØ¾ß ÇÒ¶§ È£ÃâµË´Ï´Ù. ÀÌ¶§ºÎÅÍ ¼Õ°ú ¿ÀºêÁ§Æ®´Â ¼­·Î µü ºÙ°Ô µË´Ï´Ù.
+		virtual void Beingapproached(class UHand* param);
+	// ì†ê³¼ ì˜¤ë¸Œì íŠ¸ê°€ ìƒí˜¸ì‘ìš©ì„ ì‹œì‘í•´ì•¼ í• ë•Œ í˜¸ì¶œë©ë‹ˆë‹¤. ì´ë•Œë¶€í„° ì†ê³¼ ì˜¤ë¸Œì íŠ¸ëŠ” ì„œë¡œ ë”± ë¶™ê²Œ ë©ë‹ˆë‹¤.
 	UFUNCTION(BlueprintCallable, Category = "Updatingstat")
 		virtual void StartInteraction(class UHand* param) {}
-	// ¼Õ°ú ¿ÀºêÁ§Æ®°¡ »óÈ£ÀÛ¿ëÀ» ¸ØÃç¾ß ÇÒ ¶§ È£ÃâµË´Ï´Ù. ¼Õ°ú ¿ÀºêÁ§Æ®´Â ÀÌ¶§ºÎÅÍ ¼­·Î µ¶¸³µË´Ï´Ù.
+	// ì†ê³¼ ì˜¤ë¸Œì íŠ¸ê°€ ìƒí˜¸ì‘ìš©ì„ ë©ˆì¶°ì•¼ í•  ë•Œ í˜¸ì¶œë©ë‹ˆë‹¤. ì†ê³¼ ì˜¤ë¸Œì íŠ¸ëŠ” ì´ë•Œë¶€í„° ì„œë¡œ ë…ë¦½ë©ë‹ˆë‹¤.
 	UFUNCTION(BlueprintCallable, Category = "Updatingstat")
-		virtual void QuitInteraction(class UHand* param) {}
-	// ¼Õ À§Ä¡¿¡ ´ëÇÑ ¼¼ÅÍ
+		virtual void QuitInteraction(class UHand* param);
+	// ì† ìœ„ì¹˜ì— ëŒ€í•œ ì„¸í„°
 	UFUNCTION(BlueprintCallable, Category = "InitializationRequired")
 		void SetDesiredHandTransform(USceneComponent* param) { DesiredHandTransform = param; }
 
