@@ -11,10 +11,6 @@ ATangibleActor::ATangibleActor()
 	PrimaryActorTick.bCanEverTick = true;
 
 }
-void ATangibleActor::Beingapproached(class UHand* param)
-{
-	
-}
 // Called when the game starts or when spawned
 void ATangibleActor::BeginPlay()
 {
