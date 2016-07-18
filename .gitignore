@@ -113,7 +113,7 @@ $RECYCLE.BIN/
 *.lnk
 
 #uproject
-*.uproject
+#*.uproject
 *.VC.db
 
 #unreal asset
