@@ -49,5 +49,8 @@ public:
 	//	class USkeletalMeshComponent* RealBody;
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 		class UCameraComponent* FirstPersonCameraComponent;
-
+	UFUNCTION(BlueprintCallable, Category = "ComponentGetters")
+		class UHand* GetRightHand() { return RightHand; }
+	UFUNCTION(BlueprintCallable, Category = "ComponentGetters")
+		class USceneComponent* GetRealWorldRightHand() { return RightRealHandScene; }
 };

@@ -80,6 +80,7 @@ void APilotPawn::Tick(float DeltaTime)
 		Hand_move_dirvec.X = 30000;
 	//Hand_move_dirvec /= (float)Hand_move_dirvec.Size();
 	RightRealHandScene->AddLocalOffset(Hand_move_dirvec * 1);
+	RightRealHandScene->AddLocalRotation(FRotator(InputComponent->GetAxisValue("Dev_PitchRotation"), InputComponent->GetAxisValue("Dev_YawRotation"), 0));
 }
 
 // Called to bind functionality to input
@@ -92,4 +93,6 @@ void APilotPawn::SetupPlayerInputComponent(class UInputComponent* InputComponent
 	InputComponent->BindAxis("HandX");
 	InputComponent->BindAxis("HandY");
 	InputComponent->BindAxis("HandZ");
+	InputComponent->BindAxis("Dev_PitchRotation");
+	InputComponent->BindAxis("Dev_YawRotation");
 }
