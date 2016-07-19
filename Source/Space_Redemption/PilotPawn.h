@@ -19,8 +19,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Location)
 		FVector Hand_move_dirvec;
+	UPROPERTY(VisibleDefaultsOnly, Category = Scene)
+		USceneComponent* RightShoulderScene;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Location)
-	class UHand* RightHand;
+		USceneComponent* RightRealHandScene;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Location)
+		class UHand* RightHand;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -39,20 +43,11 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 		class USkeletalMeshComponent* Dev_HeadMesh;
 	// Dev들어간 변수는 나중에 없애주면 됨.
-	//UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-	//	class UStaticMeshComponent* Dev_HandMesh;
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 		class USkeletalMeshComponent* RealArm;
-	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-		class USkeletalMeshComponent* RealBody;
-	/** Location on gun mesh where projectiles should spawn. */
-	//UPROPERTY(VisibleDefaultsOnly, Category = "Mesh")
 	//UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-	//	class USceneComponent* FP_MuzzleLocation;
-
-	/** First person camera */
-	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	//	class USkeletalMeshComponent* RealBody;
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-	class UCameraComponent* FirstPersonCameraComponent;
+		class UCameraComponent* FirstPersonCameraComponent;
 
 };
