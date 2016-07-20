@@ -25,31 +25,7 @@ void ATangibleActor::Tick( float DeltaTime )
 	Super::Tick( DeltaTime );
 }
 
-<<<<<<< HEAD
-//void ATangibleActor::Beingapproached(class UHand* param) {
-//	if (Status != Idle)
-//		return;
-//	TargetHand = param;
-//	Status = InteractionStatus::Approaching;
-//}
-//void ATangibleActor::QuitInteraction(class UHand* param) {
-//	if (Status != Interacting)
-//		return;
-//	TargetHand = NULL;
-//	Status = InteractionStatus::Idle;
-//}
-=======
-<<<<<<< HEAD
-void ATangibleActor::StartInteraction(class UHand* param)
-{
-
-}
-
-void ATangibleActor::QuitInteraction(class UHand* param)
-{
-
-}
-=======
+/*
 void ATangibleActor::Beingapproached(class UHand* param) {
 	if (Status != Idle)
 		return;
@@ -61,6 +37,4 @@ void ATangibleActor::QuitInteraction(class UHand* param) {
 		return;
 	TargetHand = NULL;
 	Status = InteractionStatus::Idle;
-}
->>>>>>> origin/master
->>>>>>> origin/master
+}*/
