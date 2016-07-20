@@ -45,10 +45,20 @@ void ATangibleActor::StartInteraction(class UHand* param)
 
 }
 
+<<<<<<< HEAD
+void ATangibleActor::StartInteraction(class UHand* param)
+{
+
+}
+
+=======
+>>>>>>> origin/master
 void ATangibleActor::QuitInteraction(class UHand* param)
 {
 
 }
+<<<<<<< HEAD
+=======
 =======
 void ATangibleActor::Beingapproached(class UHand* param) {
 	if (Status != Idle)
