@@ -21,17 +21,15 @@ class SPACE_REDEMPTION_API UHand : public USceneComponent
 private:
 	USceneComponent* _ShoulderScene;
 	USceneComponent* _RealHandScene;
-	float _ArmLength = 70;
+	float _ArmLength = 120;
 protected:
 	// 손의 현재상태를 나타냅니다. 상태는 다음 세가지 중 하나입니다.
 	// 노는중, 상호작용가능한 오브젝트에 접근중, 상호작용중 
 	enum InteractionStatus Status;
 	// 지금 상호작용의 대상이 되는 오브젝트의 레퍼런스입니다.
 	class ATangibleActor* TargetTangibleActor;
-	// 오브젝트와 상호작용을 할 시 손에 적용되어야할 트랜스폼을 가지는 씬입니다.
-	// TargetTangibleActor로부터 레퍼런스를 받아옵니다.
-	class USceneComponent* DesiredHandTransform;
-	// 가상세계 파일럿의 손의 트랜스폼을 게임월드에 반영하는 씬입니다.
+public:
+	UHand();
 	// 오브젝트에 접근을 시작할때
 	UFUNCTION(BlueprintCallable, Category = "Updatingstat")
 		virtual void StartApproaching(class ATangibleActor* TargetTangibleActor);
@@ -41,14 +39,15 @@ protected:
 	// 오브젝트와 상호작용이 끝났을때
 	UFUNCTION(BlueprintCallable, Category = "Updatingstat")
 		virtual void QuitInteraction();
-public:	
 	// Sets default values for this component's properties
-	UHand();
 	// 어깨와 현실위치씬의 포인터를 매개변수로 전달해줍니다. 반드시 생성후 바로 호출되어야합니다.
 	void DefaultSet(USceneComponent* Shoulder, USceneComponent* RealWorldHand);
 	// Called when the game starts
 	virtual void BeginPlay() override;
-	
+	UFUNCTION(BlueprintCallable, Category = "StatusReference")
+		InteractionStatus GetStaus() { return Status; }
+	UFUNCTION(BlueprintCallable, Category = "StatusReference")
+		void SetStaus(InteractionStatus param) { Status = param; }
 	// Called every frame
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 

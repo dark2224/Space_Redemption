@@ -47,15 +47,27 @@ void UHand::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 			SetWorldTransform(_RealHandScene->GetComponentTransform());
 		else
 		{
-			SetWorldLocation(_ShoulderScene->GetComponentLocation()+ _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()) / CurrentDistance);
+			SetWorldLocation(_ShoulderScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()) / CurrentDistance);
 			SetWorldRotation(_RealHandScene->GetComponentRotation());
 		}
 		break;
 	case Approaching:
 		//애니메이션 블렌딩용 float 조작
+		CurrentDistance = (_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).Size();
+		//아래 조건 : 팔길이보다 현실손이 가까이 있다면
+		if (_ArmLength > CurrentDistance)
+		{
+			SetWorldTransform(_RealHandScene->GetComponentTransform());
+			SetWorldRotation(TargetTangibleActor->GetNormalizedApproachingDistance()*TargetTangibleActor->GetRotatorBeforeApproach() + (1 - TargetTangibleActor->GetNormalizedApproachingDistance())*TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform().Rotator());
+		}
+		else
+		{
+			SetWorldLocation(_ShoulderScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()) / CurrentDistance);
+			SetWorldRotation(TargetTangibleActor->GetNormalizedApproachingDistance()*TargetTangibleActor->GetRotatorBeforeApproach() + (1 - TargetTangibleActor->GetNormalizedApproachingDistance())*TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform().Rotator());
+		}
 		break;
 	case Interacting:
-		SetWorldTransform(DesiredHandTransform->GetComponentTransform());
+		SetWorldTransform(TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform());
 		break;
 	default:
 		break;
@@ -72,7 +84,6 @@ void UHand::StartInteraction() {
 	if (Status != Approaching)
 		return;
 	Status = Interacting;
-	this->DesiredHandTransform = TargetTangibleActor->GetDesiredHandTransform();
 }
 void UHand::QuitInteraction() {
 	if (Status != Interacting)
