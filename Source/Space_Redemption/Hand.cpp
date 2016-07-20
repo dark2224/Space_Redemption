@@ -90,3 +90,6 @@ void UHand::QuitInteraction() {
 		return;
 	Status = Idle;
 }
+bool UHand::DoesWantToGrab() {
+	return _DoesWantToGrab;
+}

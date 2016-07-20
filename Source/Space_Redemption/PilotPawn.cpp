@@ -26,13 +26,13 @@ APilotPawn::APilotPawn()
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 
 	// 진짜 움직이는 팔
-	RealArm = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("RealArms"));
-	RealArm->SetupAttachment(BodyMesh);
+	RightArm = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("RightArm"));
+	RightArm->SetupAttachment(BodyMesh);
 
 	RightRealHandScene = CreateDefaultSubobject<USceneComponent>(TEXT("RightRealHandScene"));
 
 	RightShoulderScene = CreateDefaultSubobject<USceneComponent>(TEXT("RightShoulder"));
-	RightShoulderScene->SetupAttachment(RealArm);
+	RightShoulderScene->SetupAttachment(RightArm);
 
 	//진짜 움직이는 몸통
 	//RealBody = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("RealBody"));
@@ -40,12 +40,12 @@ APilotPawn::APilotPawn()
 
 	// 오른손, 이 손의 트랜스폼은 가상세계에 반영되는 플레이어 오른손의 위치와 같다.
 	RightHand = CreateDefaultSubobject<UHand>(TEXT("RealWorld_RightHand"));
-	RightHand->SetupAttachment(RealArm);
+	RightHand->SetupAttachment(RightArm);
 	RightHand->DefaultSet(RightShoulderScene, RightRealHandScene);
 	RightHand->SetRelativeLocation(FVector(0, 0, 0));
 	RightHand->SetRelativeRotation(FQuat(FRotator(0, 0, 0)));
 	//Dev_HandMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DevLeftHand"));
-	//Dev_HandMesh->SetupAttachment(RealArm);
+	//Dev_HandMesh->SetupAttachment(RightArm);
 
 	// 머리통 HMD 위치
 	Dev_HeadMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("HeadMesh"));
@@ -75,6 +75,7 @@ void APilotPawn::Tick(float DeltaTime)
 		Hand_move_dirvec.X = InputComponent->GetAxisValue("HandX");
 		Hand_move_dirvec.Y = InputComponent->GetAxisValue("HandY");
 		Hand_move_dirvec.Z = InputComponent->GetAxisValue("HandZ");
+		InputComponent->GetAxisValue("Grasp") > 0 ? RightHand->MakeGrabAvailable():RightHand->MakeGrabUnable();
 	}
 	else
 		Hand_move_dirvec.X = 30000;
@@ -88,11 +89,12 @@ void APilotPawn::SetupPlayerInputComponent(class UInputComponent* InputComponent
 {
 	Super::SetupPlayerInputComponent(InputComponent);
 	InputComponent->BindAxis("XaxisLook", this, &APawn::AddControllerYawInput);
-	InputComponent->BindAxis("YaxisLook", this, &APawn::AddControllerPitchInput);
+	InputComponent->BindAxis("YaxisLook", this,&APawn::AddControllerPitchInput);
 	//정식 빌드시 Dev 들어가는 함수는 죄다 비활성화하시오.
 	InputComponent->BindAxis("HandX");
 	InputComponent->BindAxis("HandY");
 	InputComponent->BindAxis("HandZ");
 	InputComponent->BindAxis("Dev_PitchRotation");
 	InputComponent->BindAxis("Dev_YawRotation");
+	InputComponent->BindAxis("Grasp");
 }

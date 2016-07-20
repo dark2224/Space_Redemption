@@ -21,7 +21,8 @@ class SPACE_REDEMPTION_API UHand : public USceneComponent
 private:
 	USceneComponent* _ShoulderScene;
 	USceneComponent* _RealHandScene;
-	float _ArmLength = 120;
+	bool _DoesWantToGrab= false;
+	float _ArmLength = 180;
 protected:
 	// 손의 현재상태를 나타냅니다. 상태는 다음 세가지 중 하나입니다.
 	// 노는중, 상호작용가능한 오브젝트에 접근중, 상호작용중 
@@ -29,6 +30,8 @@ protected:
 	// 지금 상호작용의 대상이 되는 오브젝트의 레퍼런스입니다.
 	class ATangibleActor* TargetTangibleActor;
 public:
+	void MakeGrabAvailable() { _DoesWantToGrab = true; }
+	void MakeGrabUnable() { _DoesWantToGrab = false; }
 	UHand();
 	// 오브젝트에 접근을 시작할때
 	UFUNCTION(BlueprintCallable, Category = "Updatingstat")
@@ -44,6 +47,8 @@ public:
 	void DefaultSet(USceneComponent* Shoulder, USceneComponent* RealWorldHand);
 	// Called when the game starts
 	virtual void BeginPlay() override;
+	UFUNCTION(BlueprintCallable, Category = "StatusReference")
+		bool DoesWantToGrab();
 	UFUNCTION(BlueprintCallable, Category = "StatusReference")
 		InteractionStatus GetStaus() { return Status; }
 	UFUNCTION(BlueprintCallable, Category = "StatusReference")
