@@ -7,10 +7,20 @@
 		{
 			"Name": "Space_Redemption",
 			"Type": "Runtime",
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"Engine"
 			]
+<<<<<<< HEAD
+=======
+=======
+			"LoadingPhase": "Default"
+>>>>>>> origin/master
+>>>>>>> origin/master
 		}
 	]
 }
