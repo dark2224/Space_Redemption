@@ -3,6 +3,8 @@
 #include "Space_Redemption.h"
 #include "Hand.h"
 
+#include "EnemyGroupManager.h"
+
 
 // Sets default values for this component's properties
 UHand::UHand()

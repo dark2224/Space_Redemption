@@ -29,3 +29,12 @@ void ATangibleActor::Tick( float DeltaTime )
 
 }
 
+void ATangibleActor::StartInteraction(class UHand* param)
+{
+
+}
+
+void ATangibleActor::QuitInteraction(class UHand* param)
+{
+
+}
