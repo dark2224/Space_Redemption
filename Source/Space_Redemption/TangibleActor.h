@@ -22,7 +22,7 @@ protected:
 		virtual void Beingapproached(class UHand* param);
 	// 손과 오브젝트가 상호작용을 시작해야 할때 호출됩니다. 이때부터 손과 오브젝트는 서로 딱 붙게 됩니다.
 	UFUNCTION(BlueprintCallable, Category = "Updatingstat")
-		virtual void StartInteraction(class UHand* param) {}
+		virtual void StartInteraction(class UHand* param);
 	// 손과 오브젝트가 상호작용을 멈춰야 할 때 호출됩니다. 손과 오브젝트는 이때부터 서로 독립됩니다.
 	UFUNCTION(BlueprintCallable, Category = "Updatingstat")
 		virtual void QuitInteraction(class UHand* param);
