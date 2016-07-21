@@ -76,8 +76,8 @@ void UHand::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 		break;
 	case Interacting:
 		//SetWorldTransform(TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform());
-		FollowTargetWithSpeed(TargetTangibleActor->GetDesiredHandTransform()->GetComponentLocation(), DeltaTime,5);
-		FollowTargetWithSpeed(TargetTangibleActor->GetDesiredHandTransform()->GetComponentRotation(), DeltaTime,5);
+		FollowTargetWithSpeed(TargetTangibleActor->GetDesiredHandTransform()->GetComponentLocation(), DeltaTime,3);
+		FollowTargetWithSpeed(TargetTangibleActor->GetDesiredHandTransform()->GetComponentRotation(), DeltaTime,2);
 		break;
 	default:
 		break;
@@ -120,15 +120,27 @@ void UHand::FollowTargetWithSpeed(FVector target, float DeltaTime, float Rate) {
 	}
 	else
 	{
-		_CurrentHandSpeed += _HandAccel*DeltaTime;
 		if (_CurrentHandSpeed > _MaxHandSpeed)
 			_CurrentHandSpeed = _MaxHandSpeed;
 		AddWorldOffset(displacement.GetSafeNormal()*_CurrentHandSpeed*Rate*DeltaTime);
+		_CurrentHandSpeed += _HandAccel*DeltaTime;
 	}
 }
 void UHand::FollowTargetWithSpeed(FRotator target, float DeltaTime, float Rate) {
 	FRotator first = GetComponentRotation();
 	FVector displacement = FVector(target.Roll-first.Roll, target.Pitch - first.Pitch, target.Yaw-first.Yaw);
+	FVector Newdisplacement(0,0,0);
+	for (float i = -1; i <= 1; i+=1.0f) {
+		for (float j = -1; i <= 1; i += 1.0f) {
+			for (float k = -1; i <= 1; i += 1.0f) {
+				FVector challenger = FVector(displacement.X+i*360,displacement.Y+j*360,displacement.Z+360*k);
+				if(Newdisplacement.Size() > challenger.Size())
+				Newdisplacement = challenger;
+			}
+		}
+	}
+	displacement = Newdisplacement;
+	//GEngine::AddOnScreenDebugMessage(-1, 3.0, FColor::Blue, displacement.ToCompactString());
 	if (displacement.Size() < Rate*_CurrentHandRotationSpeed*DeltaTime)
 	{
 		_CurrentHandRotationSpeed = _HandRotationAccel*DeltaTime;
@@ -136,10 +148,10 @@ void UHand::FollowTargetWithSpeed(FRotator target, float DeltaTime, float Rate) 
 	}
 	else
 	{
-		_CurrentHandRotationSpeed += _HandRotationAccel*DeltaTime;
 		if (_CurrentHandRotationSpeed > _MaxHandRotationSpeed)
 			_CurrentHandRotationSpeed = _MaxHandRotationSpeed;
 		displacement = displacement.GetSafeNormal()*_CurrentHandRotationSpeed*Rate*DeltaTime;
 		AddWorldRotation(FRotator(displacement.Y, displacement.Z, displacement.X));
+		_CurrentHandRotationSpeed += _HandRotationAccel*DeltaTime;
 	}
 }
