@@ -27,7 +27,7 @@ APilotPawn::APilotPawn()
 
 	// 진짜 움직이는 팔
 	RightArm = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("RightArm"));
-	RightArm->SetupAttachment(BodyMesh);
+	//RightArm->SetupAttachment(FirstPersonCameraComponent);
 
 	RightRealHandScene = CreateDefaultSubobject<USceneComponent>(TEXT("RightRealHandScene"));
 	RightShoulderScene = CreateDefaultSubobject<USceneComponent>(TEXT("RightShoulder"));
@@ -39,7 +39,7 @@ APilotPawn::APilotPawn()
 
 	// 오른손, 이 손의 트랜스폼은 가상세계에 반영되는 플레이어 오른손의 위치와 같다.
 	RightHand = CreateDefaultSubobject<UHand>(TEXT("RealWorld_RightHand"));
-	RightHand->SetupAttachment(RightArm);
+	//RightHand->SetupAttachment(RightArm);
 	RightHand->DefaultSet(RightShoulderScene, RightRealHandScene);
 	RightHand->SetRelativeLocation(FVector(0, 0, 0));
 	RightHand->SetRelativeRotation(FQuat(FRotator(0, 0, 0)));
@@ -67,6 +67,7 @@ void APilotPawn::Tick(float DeltaTime)
 
 	//InputComponent->GetAxisValue("HandX");
 	Hand_move_dirvec.X = 3;
+	RightArm->SetWorldLocation(FirstPersonCameraComponent->GetComponentLocation() + RelativeArmposition);
 
 	if (InputComponent)
 	{
@@ -74,7 +75,7 @@ void APilotPawn::Tick(float DeltaTime)
 		Hand_move_dirvec.X = InputComponent->GetAxisValue("HandX");
 		Hand_move_dirvec.Y = InputComponent->GetAxisValue("HandY");
 		Hand_move_dirvec.Z = InputComponent->GetAxisValue("HandZ");
-		InputComponent->GetAxisValue("Grasp") > 0 ? RightHand->MakeGrabAvailable():RightHand->MakeGrabUnable();
+		//InputComponent->GetAxisValue("Grasp") > 0 ? RightHand->MakeGrabAvailable():RightHand->MakeGrabUnable();
 	}
 	else
 		Hand_move_dirvec.X = 30000;

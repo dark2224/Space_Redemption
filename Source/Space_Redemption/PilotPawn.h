@@ -12,6 +12,7 @@ class SPACE_REDEMPTION_API APilotPawn : public APawn
 	GENERATED_BODY()
 		/** 몸 메쉬입니다. */
 private:
+	const FVector RelativeArmposition(-10,20,-150);
 	FVector Deltahandloc;
 public:
 	// Sets default values for this pawn's properties

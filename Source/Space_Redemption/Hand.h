@@ -44,8 +44,10 @@ protected:
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Collision)
 	//class UPrimitiveComponent* _RealHandSceneCollision;
 public:
-	void MakeGrabAvailable() { _DoesWantToGrab = true; }
-	void MakeGrabUnable() { _DoesWantToGrab = false; }
+	UFUNCTION(BlueprintCallable, Category = "Activation")
+		void MakeGrabAvailable() { _DoesWantToGrab = true; }
+	UFUNCTION(BlueprintCallable, Category = "Activation")
+		void MakeGrabUnable() { _DoesWantToGrab = false; }
 	UFUNCTION(BlueprintCallable, Category = "Initialization")
 		void DefaultSet(class UPrimitiveComponent* _HandCollision, class UPrimitiveComponent* _RealHandCollision);
 	UHand();
