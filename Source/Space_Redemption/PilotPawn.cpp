@@ -30,7 +30,6 @@ APilotPawn::APilotPawn()
 	RightArm->SetupAttachment(BodyMesh);
 
 	RightRealHandScene = CreateDefaultSubobject<USceneComponent>(TEXT("RightRealHandScene"));
-
 	RightShoulderScene = CreateDefaultSubobject<USceneComponent>(TEXT("RightShoulder"));
 	RightShoulderScene->SetupAttachment(RightArm);
 
