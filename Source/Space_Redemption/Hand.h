@@ -23,8 +23,8 @@ private:
 	float _MaxHandSpeed = 500;
 	float _HandAccel = 1000;
 	float _CurrentHandRotationSpeed = 0;
-	float _MaxHandRotationSpeed = 500;
-	float _HandRotationAccel = 1000;
+	float _MaxHandRotationSpeed = 100;
+	float _HandRotationAccel = 200;
 	bool _DoesWantToGrab = false;
 	float _ArmLength = 120;
 	class UPrimitiveComponent* _HandCollision;
