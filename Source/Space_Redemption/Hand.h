@@ -20,8 +20,8 @@ class SPACE_REDEMPTION_API UHand : public USceneComponent
 	GENERATED_BODY()
 private:
 	float _CurrentHandSpeed = 0;
-	float _MaxHandSpeed = 500;
-	float _HandAccel = 1000;
+	float _MaxHandSpeed = 100;
+	float _HandAccel = 2000;
 	float _CurrentHandRotationSpeed = 0;
 	float _MaxHandRotationSpeed = 100;
 	float _HandRotationAccel = 200;

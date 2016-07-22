@@ -12,7 +12,7 @@ class SPACE_REDEMPTION_API APilotPawn : public APawn
 	GENERATED_BODY()
 		/** 몸 메쉬입니다. */
 private:
-	const FVector RelativeArmposition = FVector(-17.839f, 17.186f, -221.363f);
+	const FVector RelativeArmposition = FVector(-17.839f, 0.0f, -221.363f);
 	//const FVector RelativeArmposition = FVector(0.f, 0.f, 0.f);
 	//FVector RelativeArmposition;
 	FVector Deltahandloc;
