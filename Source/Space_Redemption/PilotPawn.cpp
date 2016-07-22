@@ -52,12 +52,13 @@ APilotPawn::APilotPawn()
 
 	Hand_move_dirvec = FVector(10.0f, 0.0f, 0.0f);
 
+	//RelativeArmposition = FVector(-10.0f, 20.0f, -150.0f);
+
 }
 // Called when the game starts or when spawned
 void APilotPawn::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 // Called every frame
@@ -71,15 +72,12 @@ void APilotPawn::Tick(float DeltaTime)
 
 	if (InputComponent)
 	{
-		//InputComponent->GetAxisValue("HandX");
-		Hand_move_dirvec.X = InputComponent->GetAxisValue("HandX");
-		Hand_move_dirvec.Y = InputComponent->GetAxisValue("HandY");
-		Hand_move_dirvec.Z = InputComponent->GetAxisValue("HandZ");
-		//InputComponent->GetAxisValue("Grasp") > 0 ? RightHand->MakeGrabAvailable():RightHand->MakeGrabUnable();
+		//Hand_move_dirvec.X = InputComponent->GetAxisValue("HandX");
+		//Hand_move_dirvec.Y = InputComponent->GetAxisValue("HandY");
+		//Hand_move_dirvec.Z = InputComponent->GetAxisValue("HandZ");
 	}
 	else
-		Hand_move_dirvec.X = 30000;
-	//Hand_move_dirvec /= (float)Hand_move_dirvec.Size();
+		//Hand_move_dirvec.X = 30000;
 	RightRealHandScene->AddLocalOffset(Hand_move_dirvec * 1);
 	RightRealHandScene->AddLocalRotation(FRotator(InputComponent->GetAxisValue("Dev_PitchRotation"), InputComponent->GetAxisValue("Dev_YawRotation"), 0));
 }

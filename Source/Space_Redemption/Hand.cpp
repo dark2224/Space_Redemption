@@ -51,13 +51,12 @@ void UHand::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 		if (_ArmLength > CurrentDistance)
 		{
 			FollowTargetWithSpeed(_RealHandScene->GetComponentLocation(), DeltaTime);
-			FollowTargetWithSpeed(_RealHandScene->GetComponentRotation(), DeltaTime);
 		}
 		else
 		{
 			FollowTargetWithSpeed(_ShoulderScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal(), DeltaTime);
-			FollowTargetWithSpeed(_RealHandScene->GetComponentRotation(), DeltaTime);
 		}
+		FollowTargetWithSpeed(FRotationMatrix::MakeFromX((GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal()).Rotator()+FRotator(90,90,0), DeltaTime);
 		break;
 	case Approaching:
 		//애니메이션 블렌딩용 float 조작
@@ -76,7 +75,7 @@ void UHand::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 		break;
 	case Interacting:
 		//SetWorldTransform(TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform());
-		FollowTargetWithSpeed(TargetTangibleActor->GetDesiredHandTransform()->GetComponentLocation(), DeltaTime,3);
+		FollowTargetWithSpeed(TargetTangibleActor->GetDesiredHandTransform()->GetComponentLocation(), DeltaTime,5);
 		FollowTargetWithSpeed(TargetTangibleActor->GetDesiredHandTransform()->GetComponentRotation(), DeltaTime,2);
 		break;
 	default:
