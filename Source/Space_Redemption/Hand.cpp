@@ -14,6 +14,10 @@ UHand::UHand()
 	Status = Idle;
 	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
+
+	//_HandSceneCollision = CreateDefaultSubobject<USphereComponent>(TEXT("RightHandCollision"));
+	//_HandSceneCollision->SetupAttachment(this);
+	//_RealHandSceneCollision = CreateDefaultSubobject<USphereComponent>(TEXT("RightRealHandCollision"));
 }
 
 
@@ -29,6 +33,7 @@ void UHand::BeginPlay()
 void UHand::DefaultSet(USceneComponent* Shoulder, USceneComponent* RealWorldHand) {
 	_ShoulderScene = Shoulder;
 	_RealHandScene = RealWorldHand;
+	//_RealHandSceneCollision->SetupAttachment(_RealHandScene);
 }
 // Called every frame
 void UHand::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -41,11 +46,14 @@ void UHand::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 		CurrentDistance = (_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).Size();
 		//아래 조건 : 팔길이보다 현실손이 가까이 있다면
 		if (_ArmLength > CurrentDistance)
-			SetWorldTransform(_RealHandScene->GetComponentTransform());
+		{
+			FollowTargetWithSpeed(_RealHandScene->GetComponentLocation(), DeltaTime);
+			FollowTargetWithSpeed(_RealHandScene->GetComponentRotation(), DeltaTime);
+		}
 		else
 		{
-			SetWorldLocation(_ShoulderScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()) / CurrentDistance);
-			SetWorldRotation(_RealHandScene->GetComponentRotation());
+			FollowTargetWithSpeed(_ShoulderScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal(), DeltaTime);
+			FollowTargetWithSpeed(_RealHandScene->GetComponentRotation(), DeltaTime);
 		}
 		break;
 	case Approaching:
@@ -54,17 +62,19 @@ void UHand::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 		//아래 조건 : 팔길이보다 현실손이 가까이 있다면
 		if (_ArmLength > CurrentDistance)
 		{
-			SetWorldTransform(_RealHandScene->GetComponentTransform());
-			SetWorldRotation(TargetTangibleActor->GetNormalizedApproachingDistance()*TargetTangibleActor->GetRotatorBeforeApproach() + (1 - TargetTangibleActor->GetNormalizedApproachingDistance())*TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform().Rotator());
+			FollowTargetWithSpeed(_RealHandScene->GetComponentLocation(), DeltaTime);
+			FollowTargetWithSpeed(TargetTangibleActor->GetNormalizedApproachingDistance()*TargetTangibleActor->GetRotatorBeforeApproach() + (1 - TargetTangibleActor->GetNormalizedApproachingDistance())*TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform().Rotator(), DeltaTime);
 		}
 		else
 		{
-			SetWorldLocation(_ShoulderScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()) / CurrentDistance);
-			SetWorldRotation(TargetTangibleActor->GetNormalizedApproachingDistance()*TargetTangibleActor->GetRotatorBeforeApproach() + (1 - TargetTangibleActor->GetNormalizedApproachingDistance())*TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform().Rotator());
+			FollowTargetWithSpeed(_ShoulderScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal(),DeltaTime);
+			FollowTargetWithSpeed(TargetTangibleActor->GetNormalizedApproachingDistance()*TargetTangibleActor->GetRotatorBeforeApproach() + (1 - TargetTangibleActor->GetNormalizedApproachingDistance())*TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform().Rotator(), DeltaTime);
 		}
 		break;
 	case Interacting:
-		SetWorldTransform(TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform());
+		//SetWorldTransform(TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform());
+		FollowTargetWithSpeed(TargetTangibleActor->GetDesiredHandTransform()->GetComponentLocation(), DeltaTime,3);
+		FollowTargetWithSpeed(TargetTangibleActor->GetDesiredHandTransform()->GetComponentRotation(), DeltaTime,2);
 		break;
 	default:
 		break;
@@ -86,4 +96,59 @@ void UHand::QuitInteraction() {
 	if (Status != Interacting)
 		return;
 	Status = Idle;
+}
+bool UHand::DoesWantToGrab() {
+	return _DoesWantToGrab;
+}
+void UHand::DefaultSet(class UPrimitiveComponent* HandCollision, class UPrimitiveComponent* RealHandCollision)
+{
+	this->_HandCollision = HandCollision;
+	this->_RealHandCollision = RealHandCollision;
+}
+UPrimitiveComponent* UHand::GetHandSceneCollision() { return _HandCollision; }
+UPrimitiveComponent* UHand::GetRealHandSceneCollision() { return _RealHandCollision; }	// 오브젝트에 접근을 시작할때
+void UHand::FollowTargetWithSpeed(FVector target, float DeltaTime, float Rate) {
+	FVector displacement = target - GetComponentLocation();
+	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, displacement.ToCompactString());
+	if (displacement.Size() < Rate*_CurrentHandSpeed*DeltaTime)
+	{
+		_CurrentHandSpeed = _HandAccel*DeltaTime;
+		SetWorldLocation(target);
+	}
+	else
+	{
+		if (_CurrentHandSpeed > _MaxHandSpeed)
+			_CurrentHandSpeed = _MaxHandSpeed;
+		AddWorldOffset(displacement.GetSafeNormal()*_CurrentHandSpeed*Rate*DeltaTime);
+		_CurrentHandSpeed += _HandAccel*DeltaTime;
+	}
+}
+void UHand::FollowTargetWithSpeed(FRotator target, float DeltaTime, float Rate) {
+	FRotator first = GetComponentRotation();
+	FVector displacement = FVector(target.Roll-first.Roll, target.Pitch - first.Pitch, target.Yaw-first.Yaw);
+	FVector Newdisplacement(0,0,0);
+	for (float i = -1; i <= 1; i+=1.0f) {
+		for (float j = -1; i <= 1; i += 1.0f) {
+			for (float k = -1; i <= 1; i += 1.0f) {
+				FVector challenger = FVector(displacement.X+i*360,displacement.Y+j*360,displacement.Z+360*k);
+				if(Newdisplacement.Size() > challenger.Size())
+				Newdisplacement = challenger;
+			}
+		}
+	}
+	displacement = Newdisplacement;
+	//GEngine::AddOnScreenDebugMessage(-1, 3.0, FColor::Blue, displacement.ToCompactString());
+	if (displacement.Size() < Rate*_CurrentHandRotationSpeed*DeltaTime)
+	{
+		_CurrentHandRotationSpeed = _HandRotationAccel*DeltaTime;
+		SetWorldRotation(target);
+	}
+	else
+	{
+		if (_CurrentHandRotationSpeed > _MaxHandRotationSpeed)
+			_CurrentHandRotationSpeed = _MaxHandRotationSpeed;
+		displacement = displacement.GetSafeNormal()*_CurrentHandRotationSpeed*Rate*DeltaTime;
+		AddWorldRotation(FRotator(displacement.Y, displacement.Z, displacement.X));
+		_CurrentHandRotationSpeed += _HandRotationAccel*DeltaTime;
+	}
 }

@@ -2,6 +2,7 @@
 
 #include "Space_Redemption.h"
 #include "TangibleActor.h"
+#include "Pilotpawn.h"
 #include "InteractionStatus.h"
 
 
@@ -25,13 +26,22 @@ void ATangibleActor::Tick( float DeltaTime )
 	Super::Tick( DeltaTime );
 }
 
-/*
-void ATangibleActor::Beingapproached(class UHand* param) {
+
+void ATangibleActor::StartBeingApproached(class UHand* handparam, class UPrimitiveComponent *CollisionParam, class USceneComponent *RealHandSceneParm) {
 	if (Status != Idle)
 		return;
-	TargetHand = param;
+	//TargetPilotPawn = param;
+	TargetHand = handparam;
+	//HandCollision
+	TargetRealHandScene = RealHandSceneParm;
+
+	TargetHand->StartApproaching(this);
 	Status = InteractionStatus::Approaching;
+	DistanceBeforeApproach = (TargetHand->GetComponentLocation()-DesiredHandTransform->GetComponentLocation()).Size();
+	RotatorBeforeApproach = TargetHand->GetComponentRotation();
+	NormalizedApproachingDistance = 1;
 }
+/*
 void ATangibleActor::QuitInteraction(class UHand* param) {
 	if (Status != Interacting)
 		return;

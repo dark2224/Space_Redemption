@@ -44,7 +44,7 @@ public:
 		class USkeletalMeshComponent* Dev_HeadMesh;
 	// Dev들어간 변수는 나중에 없애주면 됨.
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-		class USkeletalMeshComponent* RealArm;
+		class USkeletalMeshComponent* RightArm;
 	//UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 	//	class USkeletalMeshComponent* RealBody;
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
