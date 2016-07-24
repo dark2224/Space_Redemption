@@ -25,6 +25,12 @@ public:
 		USceneComponent* RightRealHandScene;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Location)
 		class UHand* RightHand;
+	UPROPERTY(VisibleDefaultsOnly, Category = Scene)
+		USceneComponent* LeftShoulderScene;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Location)
+		USceneComponent* LeftRealHandScene;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Location)
+		class UHand* LeftHand;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -45,6 +51,8 @@ public:
 	// Dev들어간 변수는 나중에 없애주면 됨.
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 		class USkeletalMeshComponent* RightArm;
+	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+		class USkeletalMeshComponent* LeftArm;
 	//UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 	//	class USkeletalMeshComponent* RealBody;
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
@@ -53,4 +61,8 @@ public:
 		class UHand* GetRightHand() { return RightHand; }
 	UFUNCTION(BlueprintCallable, Category = "ComponentGetters")
 		class USceneComponent* GetRealWorldRightHand() { return RightRealHandScene; }
+	UFUNCTION(BlueprintCallable, Category = "ComponentGetters")
+		class UHand* GetLeftHand() { return LeftHand; }
+	UFUNCTION(BlueprintCallable, Category = "ComponentGetters")
+		class USceneComponent* GetRealWorldLeftHand() { return LeftRealHandScene; }
 };

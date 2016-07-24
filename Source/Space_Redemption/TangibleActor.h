@@ -12,6 +12,8 @@ class SPACE_REDEMPTION_API ATangibleActor : public AActor
 {
 	GENERATED_BODY()
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation)
+		UAnimSequence* InteractingAnimation;
 	enum InteractionStatus Status;
 	FRotator RotatorBeforeApproach;
 	float DistanceBeforeApproach;
@@ -65,6 +67,8 @@ public:
 		float GetDistanceBeforeApproach() { return DistanceBeforeApproach; }
 	UFUNCTION(BlueprintCallable, Category = "IntearctionStatus")
 		FRotator GetRotatorBeforeApproach(){	return RotatorBeforeApproach;}
+	UFUNCTION(BlueprintCallable, Category = "Animation")
+		UAnimSequence* GetInteractingAnimation() { return InteractingAnimation; }
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
 

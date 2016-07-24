@@ -46,6 +46,19 @@ APilotPawn::APilotPawn()
 	//Dev_HandMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DevLeftHand"));
 	//Dev_HandMesh->SetupAttachment(RightArm);
 
+	LeftArm = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("LeftArm"));
+	LeftArm->SetupAttachment(BodyMesh);
+
+	LeftRealHandScene = CreateDefaultSubobject<USceneComponent>(TEXT("LeftRealHandScene"));
+	LeftShoulderScene = CreateDefaultSubobject<USceneComponent>(TEXT("LeftShoulder"));
+	LeftShoulderScene->SetupAttachment(LeftArm);
+
+	LeftHand = CreateDefaultSubobject<UHand>(TEXT("RealWorld_LeftHand"));
+	LeftHand->SetupAttachment(LeftArm);
+	LeftHand->DefaultSet(LeftShoulderScene, LeftRealHandScene);
+	LeftHand->SetRelativeLocation(FVector(0, 0, 0));
+	LeftHand->SetRelativeRotation(FQuat(FRotator(0, 0, 0)));
+
 	// 머리통 HMD 위치
 	Dev_HeadMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("HeadMesh"));
 
@@ -74,13 +87,14 @@ void APilotPawn::Tick(float DeltaTime)
 		Hand_move_dirvec.X = InputComponent->GetAxisValue("HandX");
 		Hand_move_dirvec.Y = InputComponent->GetAxisValue("HandY");
 		Hand_move_dirvec.Z = InputComponent->GetAxisValue("HandZ");
-		InputComponent->GetAxisValue("Grasp") > 0 ? RightHand->MakeGrabAvailable():RightHand->MakeGrabUnable();
+		InputComponent->GetAxisValue("Grasp") > 0 ? RightHand->MakeGrabAvailable() : RightHand->MakeGrabUnable();
+		InputComponent->GetAxisValue("Grasp") > 0 ? LeftHand->MakeGrabAvailable() : LeftHand->MakeGrabUnable();
 	}
 	else
 		Hand_move_dirvec.X = 30000;
 	//Hand_move_dirvec /= (float)Hand_move_dirvec.Size();
+	LeftRealHandScene->AddLocalOffset(FVector(InputComponent->GetAxisValue("LeftHandX"), InputComponent->GetAxisValue("LeftHandY"), InputComponent->GetAxisValue("LeftHandZ")));
 	RightRealHandScene->AddLocalOffset(Hand_move_dirvec * 1);
-	RightRealHandScene->AddLocalRotation(FRotator(InputComponent->GetAxisValue("Dev_PitchRotation"), InputComponent->GetAxisValue("Dev_YawRotation"), 0));
 }
 
 // Called to bind functionality to input
@@ -93,7 +107,8 @@ void APilotPawn::SetupPlayerInputComponent(class UInputComponent* InputComponent
 	InputComponent->BindAxis("HandX");
 	InputComponent->BindAxis("HandY");
 	InputComponent->BindAxis("HandZ");
-	InputComponent->BindAxis("Dev_PitchRotation");
-	InputComponent->BindAxis("Dev_YawRotation");
+	InputComponent->BindAxis("LeftHandX");
+	InputComponent->BindAxis("LeftHandY");
+	InputComponent->BindAxis("LeftHandZ");
 	InputComponent->BindAxis("Grasp");
 }

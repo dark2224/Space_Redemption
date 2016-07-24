@@ -26,7 +26,7 @@ private:
 	float _MaxHandRotationSpeed = 100;
 	float _HandRotationAccel = 200;
 	bool _DoesWantToGrab = false;
-	float _ArmLength = 120;
+	float _ArmLength = 55;
 	class UPrimitiveComponent* _HandCollision;
 	class UPrimitiveComponent* _RealHandCollision;
 	void FollowTargetWithSpeed(FVector target, float DeltaTime, float Rate = 1);
