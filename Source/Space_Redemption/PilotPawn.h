@@ -14,6 +14,7 @@ class SPACE_REDEMPTION_API APilotPawn : public APawn
 private:
 	FVector Deltahandloc;
 public:
+	const FVector RelativeArmposition = FVector(-17.839f, 0.0f, -221.363f);
 	// Sets default values for this pawn's properties
 	APilotPawn();
 
