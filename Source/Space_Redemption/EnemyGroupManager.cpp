@@ -25,12 +25,19 @@ void AEnemyGroupManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AEnemyGroupManager::SetGroupSapce(float fSpace)
+TArray<class AEnemy*> AEnemyGroupManager::Get_Enemy(FString strGroupName)
+{
+	TArray<class AEnemy*>*			pAarrayActor = Get_Array(strGroupName);
+
+	return *pAarrayActor;
+}
+
+void AEnemyGroupManager::Set_GroupSapce(float fSpace)
 {
 	m_fSpace = fSpace;
 }
 
-void AEnemyGroupManager::SetFomation(FString strGroupName, EFormation_Type eFormatio)
+void AEnemyGroupManager::Set_Fomation(FString strGroupName, EFormation_Type eFormatio)
 {
 	switch (eFormatio)
 	{
@@ -44,13 +51,13 @@ void AEnemyGroupManager::SetFomation(FString strGroupName, EFormation_Type eForm
 	}
 }
 
-void AEnemyGroupManager::Inset_Enemey(FString strGroupName, class AActor* pActor)
+void AEnemyGroupManager::Inset_Enemey(FString strGroupName, class AEnemy* pActor)
 {
-	TArray<class AActor*>*			pAarrayActor = Get_Array(strGroupName);
+	TArray<class AEnemy*>*			pAarrayActor = Get_Array(strGroupName);
 
 	if (NULL == pAarrayActor)
 	{
-		TArray<class AActor*>		TarrayActor;
+		TArray<class AEnemy*>		TarrayActor;
 		TarrayActor.Add(pActor);
 		m_MapGroup.Emplace(strGroupName, TarrayActor);
 	}
@@ -61,7 +68,7 @@ void AEnemyGroupManager::Inset_Enemey(FString strGroupName, class AActor* pActor
 
 void AEnemyGroupManager::Group_TargetMove(FString strGroupName, FVector Position, float fSpeed, float fDeltaSeconds)
 {
-	TArray<class AActor*>*			TarrayActor = Get_Array(strGroupName);
+	TArray<class AEnemy*>*			TarrayActor = Get_Array(strGroupName);
 
 	if (NULL == TarrayActor)
 		return;
@@ -99,7 +106,7 @@ void AEnemyGroupManager::Group_TargetMove(FString strGroupName, FVector Position
 	}
 }
 
-TArray<class AActor*>* AEnemyGroupManager::Get_Array(FString strGroupName)
+TArray<class AEnemy*>* AEnemyGroupManager::Get_Array(FString strGroupName)
 {
 	if (NULL == m_MapGroup.Find(strGroupName))
 		return NULL;
@@ -134,7 +141,7 @@ FRotator AEnemyGroupManager::Get_AngleToAxis(FVector PositionVector, FVector Nor
 
 void AEnemyGroupManager::TriangleFormation(FString strGroupName)
 {
-	TArray<class AActor*>*			TarrayActor = Get_Array(strGroupName);
+	TArray<class AEnemy*>*			TarrayActor = Get_Array(strGroupName);
 
 	if (NULL == TarrayActor)
 		return;

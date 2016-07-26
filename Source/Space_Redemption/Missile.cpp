@@ -1,35 +1,34 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Space_Redemption.h"
-#include "MissileSystem.h"
+#include "Missile.h"
 
 // Sets default values
-AMissileSystem::AMissileSystem()
-	: m_fAceel(0.f), m_fDelay(0.0f)
+AMissile::AMissile()
+	: m_eDir(Direction_Type::DIR_Z)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
 
 // Called when the game starts or when spawned
-void AMissileSystem::BeginPlay()
+void AMissile::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
 // Called every frame
-void AMissileSystem::Tick( float DeltaTime )
+void AMissile::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 }
 
-void AMissileSystem::Initialize_Missile(float fAceel, float fDelay)
+void AMissile::Set_Dir(Direction_Type eType)
 {
-	m_fAceel = fAceel;
-	fDelay = m_fDelay;
+	m_eDir = eType;
 }
 
-void AMissileSystem::Insert_Missile(TArray<class AActor*> MisslieArray)
+Direction_Type AMissile::Get_Dir()
 {
-	m_MissileArray = MisslieArray;
+	return m_eDir;
 }

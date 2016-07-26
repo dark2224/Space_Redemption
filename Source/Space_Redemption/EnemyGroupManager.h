@@ -6,6 +6,9 @@
 #include <list>
 
 #include "GameFramework/Actor.h"
+
+#include "Enemy.h"
+
 #include "EnemyGroupManager.generated.h"
 
 UENUM(BlueprintType)
@@ -30,26 +33,29 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 public:
 	UFUNCTION(BlueprintCallable, Category = "EnemyGroup")
-		void SetGroupSapce(float fSpace);
+		TArray<class AEnemy*> Get_Enemy(FString strGroupName);
+public:
 	UFUNCTION(BlueprintCallable, Category = "EnemyGroup")
-		void SetFomation(FString strGroupName, EFormation_Type eFormatio);
+		void Set_GroupSapce(float fSpace);
+	UFUNCTION(BlueprintCallable, Category = "EnemyGroup")
+		void Set_Fomation(FString strGroupName, EFormation_Type eFormatio);
 public: // Initialize and Group Formation
 	UFUNCTION(BlueprintCallable, Category = "EnemyGroup")
-		void Inset_Enemey(FString strGroupName, class AActor* pActor);
+		void Inset_Enemey(FString strGroupName, class AEnemy* pActor);
 public:	// Group Move
 	UFUNCTION(BlueprintCallable, Category = "EnemyGroup")
 		void Group_TargetMove(FString strGroupName, FVector Position, float fSpeed, float fDeltaSeconds);
 private:
-	TArray<class AActor*>*							Get_Array(FString strGroupName);
+	TArray<class AEnemy*>*							Get_Array(FString strGroupName);
 	FRotator										Get_AngleToAxis(FVector PositionVector, FVector NormalVector);
 private: // Group
 	void											TriangleFormation(FString strGroupName);
 private:
 	void											Release(void);
 private:
-	TMap<FString, TArray<class AActor*>>			m_MapGroup;
-	typedef TMap<FString, TArray<class AActor*>>	MAPGROUP;
-	typedef TArray<class AActor*>					ARRAYACTOR;
+	TMap<FString, TArray<class AEnemy*>>			m_MapGroup;
+	typedef TMap<FString, TArray<class AEnemy*>>	MAPGROUP;
+	typedef TArray<class AEnemy*>					ARRAYACTOR;
 private:
 	EFormation_Type									m_eFormation;
 private:
