@@ -6,6 +6,20 @@
 #include "Enemy.h"
 #include "MissileSystem.generated.h"
 
+UENUM(BlueprintType)
+enum class Direction_Type : uint8
+{
+	DIRECTION_Z		UMETA(DisplayName = "Direction_Z"),
+	DIRECTION_ZY	UMETA(DisplayName = "Direction_ZY"),
+	DIRECTION_Y		UMETA(DisplayName = "Direction_Y"),
+	DIRECTION_NYZ	UMETA(DisplayName = "Direction_NYZ"),
+	DIRECTION_NZ	UMETA(DisplayName = "Direction_NZ"),
+	DIRECTION_NYNZ	UMETA(DisplayName = "Direction_NYNZ"),
+	DIRECTION_NY	UMETA(DisplayName = "Direction_NY"),
+	DIRECTION_YNZ	UMETA(DisplayName = "Direction_NYZ"),
+	DIRECTION_END	UMETA(DisplayName = "Direction_End"),
+};
+
 UCLASS()
 class SPACE_REDEMPTION_API AMissileSystem : public AActor
 {
@@ -25,9 +39,15 @@ public:		// Set Function & Blueprint
 protected:
 	TArray<class AActor*>						m_MissileArray;
 	typedef TArray<class AActor*>				MISSILEARRAY;
+<<<<<<< HEAD
 	TArray<class AEnemy*>						m_EnemyArray;
 	typedef TArray<class AEnemy*>				ENEMYARRAY;
 protected:
 	float										m_fAceel;
 	float										m_fDelay;
+=======
+protected:
+	Direction_Type								m_eMissile_Type;
+	float										m_fSpeed;
+>>>>>>> origin/master
 };

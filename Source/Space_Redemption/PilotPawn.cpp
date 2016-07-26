@@ -93,6 +93,9 @@ void APilotPawn::Tick(float DeltaTime)
 	else
 		Hand_move_dirvec.X = 30000;
 	//Hand_move_dirvec /= (float)Hand_move_dirvec.Size();
+	RightArm->SetWorldLocation(FirstPersonCameraComponent->GetComponentLocation() + RelativeArmposition);
+	LeftArm->SetWorldLocation(FirstPersonCameraComponent->GetComponentLocation() + RelativeArmposition);
+
 	LeftRealHandScene->AddLocalOffset(FVector(InputComponent->GetAxisValue("LeftHandX"), InputComponent->GetAxisValue("LeftHandY"), InputComponent->GetAxisValue("LeftHandZ")));
 	RightRealHandScene->AddLocalOffset(Hand_move_dirvec * 1);
 }
