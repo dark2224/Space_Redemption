@@ -6,7 +6,7 @@
 
 AGuided_Missile::AGuided_Missile()
 	: m_fTime(0.0f),		m_fMaxTime(0.0f)
-	, m_fGravity(0.098f),	m_fPower(0.0f)
+	, m_fGravity(0.0f),		m_fPower(0.0f)
 {
 	PrimaryActorTick.bCanEverTick = true;
 }

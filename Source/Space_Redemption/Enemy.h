@@ -28,6 +28,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
 		Enemy_Type Get_Type();
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
+		bool Get_Delay();
+	UFUNCTION(BlueprintCallable, Category = "Enemy")
 		int Get_Hp();
 public:
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
@@ -36,7 +38,13 @@ public:
 		void Set_Damage(int iDamage);
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
 		void Set_EnemyType(Enemy_Type eEnemyType);
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
+	float									m_fDelay;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
+	int										m_iHp;
 private:
 	Enemy_Type								m_eEnemy_Type;
-	int										m_iHp;
+private:
+	float									m_fTime;
 };

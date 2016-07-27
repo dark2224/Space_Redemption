@@ -30,6 +30,11 @@ public:
 	void Missile_Move(int iIndex);
 	UFUNCTION(BlueprintCallable, Category = "Guided_Missile")
 	void Trace_Enemy();
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Guided_Missile")
+	float							m_fGravity;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Guided_Missile")
+	float							m_fPower;
 private:		// Get
 	bool Check_Enemy(int iIndex);
 private:
@@ -37,6 +42,4 @@ private:
 private:
 	float							m_fTime;
 	float							m_fMaxTime;
-	float							m_fGravity;
-	float							m_fPower;
 };
