@@ -14,7 +14,7 @@ private:
 	FRotator CurrentRotationSpeed = FRotator(0.0f,0.0f,0.0f);
 	const float RotationAcceleration = 30;
 	const float RotationDeccelration = 20;
-	const float MaxRotationspeed = 40;
+	const float MaxRotationspeed = 20;
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Main")
 	class ATangibleActor* EmergencyLever;

@@ -4,6 +4,8 @@
 #include "TangibleActor.h"
 #include "PilotPawn.h"
 #include "PlayerShip.h"
+#include "HandleStick.h"
+#include <cmath>
 
 
 // Sets default values
@@ -26,7 +28,7 @@ void APlayerShip::BeginPlay()
 
 // Called every frame
 
-void APlayerShip::DefaultSet(class ATangibleActor* EmergencyLever_p, class ATangibleActor* GunPad_p, class ATangibleActor* HandleStick_p, class ATangibleActor* MissileButton_p, class APilotPawn* Pilot_p)
+void APlayerShip::DefaultSet(class ATangibleActor* EmergencyLever_p, class ATangibleActor* GunPad_p, AHandleStick* HandleStick_p, class ATangibleActor* MissileButton_p, class APilotPawn* Pilot_p)
 {
 	this->EmergencyLever = EmergencyLever_p;
 	this->GunPad = GunPad_p;
@@ -43,5 +45,17 @@ void APlayerShip::DefaultSet(class ATangibleActor* EmergencyLever_p, class ATang
 void APlayerShip::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (HandleStick->GetNormalizedFacingVector().IsZero())
+	{
+		CurrentRotationSpeed -= RotationDeccelration /
+			(sqrtf(CurrentRotationSpeed.Pitch*CurrentRotationSpeed.Pitch+
+				CurrentRotationSpeed.Yaw*CurrentRotationSpeed.Yaw+
+				CurrentRotationSpeed.Roll*CurrentRotationSpeed.Roll))
+			*CurrentRotationSpeed;
+	}
+	else
+	{
+		CurrentRotationSpeed += RotationAcceleration*FRotator(HandleStick->GetNormalizedFacingVector().X, HandleStick->GetNormalizedFacingVector().Y,0);
+	}
 	AddActorLocalRotation((DeltaTime*CurrentRotationSpeed).Quaternion());
 }

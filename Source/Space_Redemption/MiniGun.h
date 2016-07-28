@@ -10,7 +10,9 @@ class SPACE_REDEMPTION_API AMiniGun : public AActor
 {
 	GENERATED_BODY()
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	UMeshComponent* LaserPointer;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	UMeshComponent* RealGunMesh;
 public:	
 	// Sets default values for this actor's properties
