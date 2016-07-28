@@ -9,6 +9,9 @@ UCLASS()
 class SPACE_REDEMPTION_API AMiniGun : public AActor
 {
 	GENERATED_BODY()
+private:
+	const FRotator Clamper = FRotator(22.5f,70.0f,0);
+	class ATouchPad* targetPad;
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	UMeshComponent* LaserPointer;
@@ -23,7 +26,5 @@ public:
 	
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
-
-	
-	
+	void LinkPad(class ATouchPad* target);
 };

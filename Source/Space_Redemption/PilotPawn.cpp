@@ -23,7 +23,7 @@ APilotPawn::APilotPawn()
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCameraComponent->SetupAttachment(BodyMesh);
 	FirstPersonCameraComponent->RelativeLocation = FVector(-12.75f, 0, 99.151726f); // Position the camera
-	FirstPersonCameraComponent->bUsePawnControlRotation = true;
+	FirstPersonCameraComponent->bUsePawnControlRotation = false;
 
 	// 진짜 움직이는 팔
 	RightArm = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("RightArm"));
@@ -93,19 +93,20 @@ void APilotPawn::Tick(float DeltaTime)
 	else
 		Hand_move_dirvec.X = 30000;
 	//Hand_move_dirvec /= (float)Hand_move_dirvec.Size();
-	RightArm->SetWorldLocation(FirstPersonCameraComponent->GetComponentLocation() + RelativeArmposition);
-	LeftArm->SetWorldLocation(FirstPersonCameraComponent->GetComponentLocation() + RelativeArmposition);
+	RightArm->SetRelativeLocation(FirstPersonCameraComponent->RelativeLocation + RelativeArmposition);
+	LeftArm->SetRelativeLocation(FirstPersonCameraComponent->RelativeLocation + RelativeArmposition);
 
 	LeftRealHandScene->AddLocalOffset(FVector(InputComponent->GetAxisValue("LeftHandX"), InputComponent->GetAxisValue("LeftHandY"), InputComponent->GetAxisValue("LeftHandZ")));
 	RightRealHandScene->AddLocalOffset(Hand_move_dirvec * 1);
+	FirstPersonCameraComponent->AddRelativeRotation(FRotator(-InputComponent->GetAxisValue("YaxisLook"), InputComponent->GetAxisValue("XaxisLook"), 0));
 }
 
 // Called to bind functionality to input
 void APilotPawn::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
 	Super::SetupPlayerInputComponent(InputComponent);
-	InputComponent->BindAxis("XaxisLook", this, &APawn::AddControllerYawInput);
-	InputComponent->BindAxis("YaxisLook", this,&APawn::AddControllerPitchInput);
+	InputComponent->BindAxis("XaxisLook");
+	InputComponent->BindAxis("YaxisLook");
 	//정식 빌드시 Dev 들어가는 함수는 죄다 비활성화하시오.
 	InputComponent->BindAxis("HandX");
 	InputComponent->BindAxis("HandY");

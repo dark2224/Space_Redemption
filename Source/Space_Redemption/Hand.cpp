@@ -44,14 +44,17 @@ void UHand::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 	case Idle:
 		// 아래는 어깨에서 현실손까지의 거리
 		CurrentDistance = (_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).Size();
+		//CurrentDistance = (_RealHandScene->RelativeLocation - _ShoulderScene->RelativeLocation).Size();
 		//아래 조건 : 팔길이보다 현실손이 가까이 있다면
 		if (_ArmLength > CurrentDistance)
 		{
+			//SetRelativeLocation(_RealHandScene->RelativeLocation);
 			SetWorldLocation(_RealHandScene->GetComponentLocation());
 			//FollowTargetWithSpeed(_RealHandScene->GetComponentLocation(), DeltaTime);
 		}
 		else
 		{
+			//SetRelativeLocation(_RealHandScene->RelativeLocation + _ArmLength*(_RealHandScene->RelativeLocation - _ShoulderScene->RelativeLocation));
 			SetWorldLocation(_RealHandScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()));
 			//FollowTargetWithSpeed(_ShoulderScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal(), DeltaTime);
 		}
@@ -60,15 +63,18 @@ void UHand::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 	case Approaching:
 		//애니메이션 블렌딩용 float 조작
 		CurrentDistance = (_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).Size();
+		//CurrentDistance = (_RealHandScene->RelativeLocation - _ShoulderScene->RelativeLocation).Size();
 		//아래 조건 : 팔길이보다 현실손이 가까이 있다면
 		if (_ArmLength > CurrentDistance)
 		{
+			//SetRelativeLocation(_RealHandScene->RelativeLocation);
 			SetWorldLocation(_RealHandScene->GetComponentLocation());
 			//FollowTargetWithSpeed(_RealHandScene->GetComponentLocation(), DeltaTime);
 			FollowTargetWithSpeed(TargetTangibleActor->GetNormalizedApproachingDistance()*TargetTangibleActor->GetRotatorBeforeApproach() + (1 - TargetTangibleActor->GetNormalizedApproachingDistance())*TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform().Rotator(), DeltaTime);
 		}
 		else
 		{
+			//SetRelativeLocation(_RealHandScene->RelativeLocation + _ArmLength*(_RealHandScene->RelativeLocation - _ShoulderScene->RelativeLocation));
 			SetWorldLocation(_RealHandScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()));
 			//FollowTargetWithSpeed(_ShoulderScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal(),DeltaTime);
 			FollowTargetWithSpeed(TargetTangibleActor->GetNormalizedApproachingDistance()*TargetTangibleActor->GetRotatorBeforeApproach() + (1 - TargetTangibleActor->GetNormalizedApproachingDistance())*TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform().Rotator(), DeltaTime);
@@ -102,6 +108,9 @@ void UHand::QuitInteraction() {
 }
 bool UHand::DoesWantToGrab() {
 	return _DoesWantToGrab;
+}
+bool UHand::DoesWantSecondaryGrasp() {
+	return _DoesWantSecondaryGrasp;
 }
 void UHand::DefaultSet(class UPrimitiveComponent* HandCollision, class UPrimitiveComponent* RealHandCollision)
 {

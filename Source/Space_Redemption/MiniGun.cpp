@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Space_Redemption.h"
+#include "TouchPad.h"
 #include "MiniGun.h"
 
 
@@ -24,5 +25,13 @@ void AMiniGun::BeginPlay()
 void AMiniGun::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-
+	if (targetPad) {
+		LaserPointer->SetRelativeRotation(FRotator(Clamper.Pitch*(targetPad->GetMappingCoordinate().X+1),Clamper.Yaw*targetPad->GetMappingCoordinate().Y , 0));
+	}
+	else {
+		
+	}
+}
+void AMiniGun::LinkPad(ATouchPad* target) {
+	targetPad = target;
 }

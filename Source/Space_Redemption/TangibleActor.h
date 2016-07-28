@@ -22,8 +22,8 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 		class USceneComponent *DesiredHandTransform;
 	UPROPERTY()
-	//class APilotPawn* TargetPilotPawn;
-	class UHand* TargetHand;
+		//class APilotPawn* TargetPilotPawn;
+		class UHand* TargetHand;
 	class USceneComponent *TargetRealHandScene;
 	// 손이 오브젝트에 다가갈 때 한번만 호출되는 함수입니다. 대부분의 필요한 변수가 초기화됩니다. 참조하고 있는 Hand 객체의 StartApproaching 메서드도 호출합니다.
 	UFUNCTION(BlueprintCallable, Category = "Updatingstat")
@@ -36,13 +36,13 @@ protected:
 	//	virtual void QuitInteraction(class UHand* param) { TargetHand = nullptr; };
 	// 손 위치에 대한 세터
 	UFUNCTION(BlueprintCallable, Category = "InitializationRequired")
-		void SetDistanceBeforeApproach(float param) { DistanceBeforeApproach= param; }
+		void SetDistanceBeforeApproach(float param) { DistanceBeforeApproach = param; }
 	UFUNCTION(BlueprintCallable, Category = "InitializationRequired")
 		void SetRotatorBeforeApproach(FRotator param) { RotatorBeforeApproach = param; }
 	UFUNCTION(BlueprintCallable, Category = "InitializationRequired")
 		void SetDesiredHandTransform(USceneComponent* param) { DesiredHandTransform = param; }
 	UFUNCTION(BlueprintCallable, Category = "InitializationRequired")
-		void SetNormalizedApproachingDistance(float param) { NormalizedApproachingDistance = (param<1)?param:1; }
+		void SetNormalizedApproachingDistance(float param) { NormalizedApproachingDistance = (param < 1) ? param : 1; }
 public:
 	// Sets default values for this actor's properties
 	ATangibleActor();
@@ -66,12 +66,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "IntearctionStatus")
 		float GetDistanceBeforeApproach() { return DistanceBeforeApproach; }
 	UFUNCTION(BlueprintCallable, Category = "IntearctionStatus")
-		FRotator GetRotatorBeforeApproach(){	return RotatorBeforeApproach;}
+		FRotator GetRotatorBeforeApproach() { return RotatorBeforeApproach; }
 	UFUNCTION(BlueprintCallable, Category = "Animation")
 		UAnimSequence* GetInteractingAnimation() { return InteractingAnimation; }
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
-
+	UFUNCTION(BlueprintCallable, Category = "SecondFunction")
+		virtual void StartSecondaryGrap() {}
+	UFUNCTION(BlueprintCallable, Category = "SecondFunction")
+		virtual void StopSecondaryGrap() {}
 	virtual class USceneComponent* GetDesiredHandTransform() { return DesiredHandTransform; }
 
 };

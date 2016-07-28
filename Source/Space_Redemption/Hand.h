@@ -26,6 +26,7 @@ private:
 	float _MaxHandRotationSpeed = 100;
 	float _HandRotationAccel = 200;
 	bool _DoesWantToGrab = false;
+	bool _DoesWantSecondaryGrasp = false;
 	float _ArmLength = 55;
 	class UPrimitiveComponent* _HandCollision;
 	class UPrimitiveComponent* _RealHandCollision;
@@ -46,6 +47,8 @@ protected:
 public:
 	void MakeGrabAvailable() { _DoesWantToGrab = true; }
 	void MakeGrabUnable() { _DoesWantToGrab = false; }
+	void MakeSecondaryGraspAvailable() { _DoesWantSecondaryGrasp = true; }
+	void MakeSecondaryGraspUnable() { _DoesWantSecondaryGrasp = false; }
 	UFUNCTION(BlueprintCallable, Category = "Initialization")
 		void DefaultSet(class UPrimitiveComponent* _HandCollision, class UPrimitiveComponent* _RealHandCollision);
 	UHand();
@@ -71,6 +74,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "StatusReference")
 		bool DoesWantToGrab();
 	UFUNCTION(BlueprintCallable, Category = "StatusReference")
+		bool DoesWantSecondaryGrasp();
+	UFUNCTION(BlueprintCallable, Category = "StatusReference")
 		InteractionStatus GetStaus() { return Status; }
 	UFUNCTION(BlueprintCallable, Category = "StatusReference")
 		void SetStaus(InteractionStatus param) { Status = param; }
@@ -78,5 +83,4 @@ public:
 		class ATangibleActor* GetTargetTangibleObject() { return TargetTangibleActor; }
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
 };
