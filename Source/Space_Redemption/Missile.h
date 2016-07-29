@@ -32,9 +32,38 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 public:
 	UFUNCTION(BlueprintCallable, Category = "Missile")
-		void Set_Dir(Direction_Type eType);
+	FVector					Get_Position();
+	UFUNCTION(BlueprintCallable, Category = "Missile")
+	bool					Get_StartCheck();
 public:
-	Direction_Type Get_Dir();
+	UFUNCTION(BlueprintCallable, Category = "Missile")
+	void					Set_Postion(FVector vPosition);
+	UFUNCTION(BlueprintCallable, Category = "Missile")
+	void					Set_Dir(Direction_Type eType);
+	UFUNCTION(BlueprintCallable, Category = "Missile")
+	void					Set_MaxTime(float fMaxTime);
+	UFUNCTION(BlueprintCallable, Category = "Missile")
+	void					Set_StartCheck(bool bStartCheck);
+public:
+	UFUNCTION(BlueprintCallable, Category = "Missile")
+	void					Initialize_Missile(FVector vPosition, Direction_Type eDirType, float fSpeed, float fMaxTime, float fDelay);
+	UFUNCTION(BlueprintCallable, Category = "Missile")
+	void					Reset_Missile();
+public:			// Get
+	Direction_Type			Get_Dir();
+	float					Get_Speed();
+	float					Get_MaxTime();
+	float					Get_Delay();
+public:			// Set
+	void					Set_Delay(float fDelay);
 private:
-	Direction_Type							m_eDir;
+	FVector					m_vOriPosition;
+private:
+	Direction_Type			m_eDir;
+private:
+	float					m_fMissileSpeed;
+	float					m_fMaxTime;
+	float					m_fOriDelay;
+	float					m_fDelay;
+	bool					m_bStartCheck;
 };

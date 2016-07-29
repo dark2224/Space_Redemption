@@ -3,7 +3,9 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+
 #include "Enemy.h"
+
 #include "MissileSystem.generated.h"
 
 UCLASS()
@@ -17,19 +19,17 @@ public:
 	virtual void BeginPlay() override;
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
-public:		// Set Function & Blueprint
-	UFUNCTION(BlueprintCallable, Category = "Missile_System")
-		void	Initialize_Missile(float fAceel, float fDelay);
+public:
 	UFUNCTION(BlueprintCallable, Category = "Missile_System")
 		void	Insert_Missile(class AActor* pMissile);
+public:
+	UFUNCTION(BlueprintCallable, Category = "Missile_System")
+		bool	Get_EnemyArray();
+	UFUNCTION(BlueprintCallable, Category = "Missile_System")
+		TArray<class AActor*>	Get_MissileArray();
 protected:
 	TArray<class AActor*>						m_MissileArray;
 	typedef TArray<class AActor*>				MISSILEARRAY;
 	TArray<class AEnemy*>						m_EnemyArray;
 	typedef TArray<class AEnemy*>				ENEMYARRAY;
-protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Missile_System")
-	float										m_fAceel;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Missile_System")
-	float										m_fDelay;
 };

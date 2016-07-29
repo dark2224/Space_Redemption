@@ -1,6 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Space_Redemption.h"
+
+
+
 #include "EnemyGroupManager.h"
 
 AEnemyGroupManager::AEnemyGroupManager()
@@ -25,9 +28,29 @@ void AEnemyGroupManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-TArray<class AEnemy*> AEnemyGroupManager::Get_Enemy(FString strGroupName)
+TArray<class AEnemy*> AEnemyGroupManager::Get_Enemy()
 {
-	TArray<class AEnemy*>*			pAarrayActor = Get_Array(strGroupName);
+	TArray<class AEnemy*>*			pAarrayActor = NULL;
+
+	int								iCount = 0;
+
+	for (int index = 0; index < m_GroupNameArray.Num(); ++index)
+	{
+		ARRAYACTOR::TIterator		iter_begin = m_MapGroup[m_GroupNameArray[index]];
+
+		for (int iArray = 0; iArray < m_MapGroup[m_GroupNameArray[index]].Num(); ++iArray)
+		{
+			if (Enemy_Type::ENEMY_Alive == (*iter_begin)->Get_Type())
+				++iCount;
+
+			if (iCount >= m_MapGroup[m_GroupNameArray[index]].Num())
+			{
+				pAarrayActor = &m_MapGroup[m_GroupNameArray[index]];
+				iCount = 0;
+				break;
+			}
+		}
+	}
 
 	return *pAarrayActor;
 }
@@ -60,6 +83,7 @@ void AEnemyGroupManager::Inset_Enemey(FString strGroupName, class AEnemy* pActor
 		TArray<class AEnemy*>		TarrayActor;
 		TarrayActor.Add(pActor);
 		m_MapGroup.Emplace(strGroupName, TarrayActor);
+		m_GroupNameArray.Add(strGroupName);
 	}
 
 	else
@@ -113,6 +137,11 @@ TArray<class AEnemy*>* AEnemyGroupManager::Get_Array(FString strGroupName)
 
 	else
 		return m_MapGroup.Find(strGroupName);
+}
+
+TArray<FString> AEnemyGroupManager::Get_GroupName()
+{
+	return m_GroupNameArray;
 }
 
 FRotator AEnemyGroupManager::Get_AngleToAxis(FVector PositionVector, FVector NormalVector)

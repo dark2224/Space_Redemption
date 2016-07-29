@@ -23,8 +23,6 @@ public:
 public:
 	UFUNCTION(BlueprintCallable, Category = "Guided_Missile")
 	void Set_Enemy(TArray<class AEnemy*> EnemyArray);
-	UFUNCTION(BlueprintCallable, Category = "Guided_Missile")
-	void Set_MaxTime(float fMaxTime);
 public:
 	UFUNCTION(BlueprintCallable, Category = "Guided_Missile")
 	void Missile_Move(int iIndex);
@@ -35,11 +33,15 @@ public:
 	float							m_fGravity;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Guided_Missile")
 	float							m_fPower;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Guided_Missile")
+	float							m_fParabolaTime;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Guided_Missile")
+	float							m_fRotationRoll;
 private:		// Get
 	bool Check_Enemy(int iIndex);
 private:
 	FVector Parabola(int iIndex);
 private:
 	float							m_fTime;
-	float							m_fMaxTime;
+	float							m_fAngle;
 };

@@ -33,7 +33,7 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 public:
 	UFUNCTION(BlueprintCallable, Category = "EnemyGroup")
-		TArray<class AEnemy*> Get_Enemy(FString strGroupName);
+		TArray<class AEnemy*> Get_Enemy();
 public:
 	UFUNCTION(BlueprintCallable, Category = "EnemyGroup")
 		void Set_GroupSapce(float fSpace);
@@ -47,6 +47,7 @@ public:	// Group Move
 		void Group_TargetMove(FString strGroupName, FVector Position, float fSpeed, float fDeltaSeconds);
 private:
 	TArray<class AEnemy*>*							Get_Array(FString strGroupName);
+	TArray<FString>									Get_GroupName();
 	FRotator										Get_AngleToAxis(FVector PositionVector, FVector NormalVector);
 private: // Group
 	void											TriangleFormation(FString strGroupName);
@@ -56,6 +57,9 @@ private:
 	TMap<FString, TArray<class AEnemy*>>			m_MapGroup;
 	typedef TMap<FString, TArray<class AEnemy*>>	MAPGROUP;
 	typedef TArray<class AEnemy*>					ARRAYACTOR;
+private:
+	TArray<FString>									m_GroupNameArray;
+	typedef TArray<FString>							ARRAYGROUPNAME;
 private:
 	EFormation_Type									m_eFormation;
 private:
