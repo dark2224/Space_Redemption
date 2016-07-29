@@ -11,7 +11,10 @@ UCLASS()
 class SPACE_REDEMPTION_API ATangibleActor : public AActor
 {
 	GENERATED_BODY()
+private:
+	FRotator ApproachingDeltaRotation;
 protected:
+	bool isPushingSecond = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation)
 		UAnimSequence* InteractingAnimation;
 	enum InteractionStatus Status;
@@ -27,7 +30,7 @@ protected:
 	class USceneComponent *TargetRealHandScene;
 	// 손이 오브젝트에 다가갈 때 한번만 호출되는 함수입니다. 대부분의 필요한 변수가 초기화됩니다. 참조하고 있는 Hand 객체의 StartApproaching 메서드도 호출합니다.
 	UFUNCTION(BlueprintCallable, Category = "Updatingstat")
-		virtual void StartBeingApproached(class UHand* handparam, class USceneComponent *RealHandSceneParm);
+		virtual void StartBeingApproached(class UHand* handparam, class USceneComponent *RealHandSceneParm,FRotator DeltaRotation);
 	//// 손과 오브젝트가 상호작용을 시작해야 할때 호출됩니다. 이때부터 손과 오브젝트는 서로 딱 붙게 됩니다.
 	//UFUNCTION(BlueprintCallable, Category = "Updatingstat")
 	//	virtual void StartInteraction(class UHand* param) { TargetHand = param; Status = Interacting; }
@@ -46,9 +49,11 @@ protected:
 public:
 	// Sets default values for this actor's properties
 	ATangibleActor();
-
 	// 타겟 손, 타겟 현실 손 씬 컴포넌트는 여기서 겟쎗 가능.
 	virtual void BeginPlay() override;
+	FRotator GetApproachingDeltaRotation() {
+		return ApproachingDeltaRotation;
+	}
 	UFUNCTION(BlueprintCallable, Category = "IntearctionStatus")
 		float GetNormalizedApproachingDistance() { return NormalizedApproachingDistance; }
 	UFUNCTION(BlueprintCallable, Category = "IntearctionStatus")
@@ -74,7 +79,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "SecondFunction")
 		virtual void StartSecondaryGrap() {}
 	UFUNCTION(BlueprintCallable, Category = "SecondFunction")
-		virtual void StopSecondaryGrap() {}
+		virtual void StopSecondaryGrap(){}
+	bool GetisPushingSecond();
 	virtual class USceneComponent* GetDesiredHandTransform() { return DesiredHandTransform; }
-
+	void SetIsPushingSecond(bool value);
 };

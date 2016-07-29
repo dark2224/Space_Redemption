@@ -55,7 +55,7 @@ void UHand::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 		else
 		{
 			//SetRelativeLocation(_RealHandScene->RelativeLocation + _ArmLength*(_RealHandScene->RelativeLocation - _ShoulderScene->RelativeLocation));
-			SetWorldLocation(_RealHandScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()));
+			SetWorldLocation(_RealHandScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal());
 			//FollowTargetWithSpeed(_ShoulderScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal(), DeltaTime);
 		}
 		FollowTargetWithSpeed(FRotationMatrix::MakeFromX((GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal()).Rotator() + FRotator(90, 90, 0), DeltaTime);
@@ -70,20 +70,23 @@ void UHand::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 			//SetRelativeLocation(_RealHandScene->RelativeLocation);
 			SetWorldLocation(_RealHandScene->GetComponentLocation());
 			//FollowTargetWithSpeed(_RealHandScene->GetComponentLocation(), DeltaTime);
-			FollowTargetWithSpeed(TargetTangibleActor->GetNormalizedApproachingDistance()*TargetTangibleActor->GetRotatorBeforeApproach() + (1 - TargetTangibleActor->GetNormalizedApproachingDistance())*TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform().Rotator(), DeltaTime);
+			//FollowTargetWithSpeed(TargetTangibleActor->GetNormalizedApproachingDistance()*TargetTangibleActor->GetRotatorBeforeApproach() + (1 - TargetTangibleActor->GetNormalizedApproachingDistance())*TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform().Rotator(), DeltaTime);
 		}
 		else
 		{
 			//SetRelativeLocation(_RealHandScene->RelativeLocation + _ArmLength*(_RealHandScene->RelativeLocation - _ShoulderScene->RelativeLocation));
-			SetWorldLocation(_RealHandScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()));
+			SetWorldLocation(_RealHandScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal());
 			//FollowTargetWithSpeed(_ShoulderScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal(),DeltaTime);
-			FollowTargetWithSpeed(TargetTangibleActor->GetNormalizedApproachingDistance()*TargetTangibleActor->GetRotatorBeforeApproach() + (1 - TargetTangibleActor->GetNormalizedApproachingDistance())*TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform().Rotator(), DeltaTime);
 		}
+		SetWorldRotation(TargetTangibleActor->GetRotatorBeforeApproach());
+		AddWorldRotation(TargetTangibleActor->GetApproachingDeltaRotation()*(1- TargetTangibleActor->GetNormalizedApproachingDistance()));
+		//FollowTargetWithSpeed(TargetTangibleActor->GetNormalizedApproachingDistance()*TargetTangibleActor->GetRotatorBeforeApproach() + (1 - TargetTangibleActor->GetNormalizedApproachingDistance())*TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform().Rotator(), DeltaTime);
 		break;
 	case Interacting:
 		SetWorldTransform(TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform());
 		//FollowTargetWithSpeed(TargetTangibleActor->GetDesiredHandTransform()->GetComponentLocation(), DeltaTime,1000);
 		//FollowTargetWithSpeed(TargetTangibleActor->GetDesiredHandTransform()->GetComponentRotation(), DeltaTime,2000);
+		TargetTangibleActor->SetIsPushingSecond(_DoesWantSecondaryGrasp);
 		break;
 	default:
 		break;

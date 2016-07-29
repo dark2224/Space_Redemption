@@ -11,23 +11,20 @@ APilotPawn::APilotPawn()
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	BodyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body"));
-	BodyMesh->SetOnlyOwnerSee(true);
-	BodyMesh->bCastDynamicShadow = false;
-	BodyMesh->CastShadow = false;
+	Origin = CreateDefaultSubobject<USceneComponent>(TEXT("Origin"));
 
 	/*HandMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Hands"));
 	HandMesh->SetupAttachment(BodyMesh);
 	HandMesh->RelativeLocation = FVector(1.18f, -0.82f, 0.02f);*/
 
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
-	FirstPersonCameraComponent->SetupAttachment(BodyMesh);
-	FirstPersonCameraComponent->RelativeLocation = FVector(-12.75f, 0, 99.151726f); // Position the camera
+	FirstPersonCameraComponent->SetupAttachment(Origin);
+	FirstPersonCameraComponent->RelativeLocation = FVector(-32.75f, 0, 99.151726f); // Position the camera
 	FirstPersonCameraComponent->bUsePawnControlRotation = false;
 
 	// 진짜 움직이는 팔
 	RightArm = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("RightArm"));
-	RightArm->SetupAttachment(BodyMesh);
+	RightArm->SetupAttachment(Origin);
 
 	RightRealHandScene = CreateDefaultSubobject<USceneComponent>(TEXT("RightRealHandScene"));
 	RightShoulderScene = CreateDefaultSubobject<USceneComponent>(TEXT("RightShoulder"));
@@ -47,7 +44,7 @@ APilotPawn::APilotPawn()
 	//Dev_HandMesh->SetupAttachment(RightArm);
 
 	LeftArm = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("LeftArm"));
-	LeftArm->SetupAttachment(BodyMesh);
+	LeftArm->SetupAttachment(Origin);
 
 	LeftRealHandScene = CreateDefaultSubobject<USceneComponent>(TEXT("LeftRealHandScene"));
 	LeftShoulderScene = CreateDefaultSubobject<USceneComponent>(TEXT("LeftShoulder"));
@@ -89,6 +86,8 @@ void APilotPawn::Tick(float DeltaTime)
 		Hand_move_dirvec.Z = InputComponent->GetAxisValue("HandZ");
 		InputComponent->GetAxisValue("Grasp") > 0 ? RightHand->MakeGrabAvailable() : RightHand->MakeGrabUnable();
 		InputComponent->GetAxisValue("Grasp") > 0 ? LeftHand->MakeGrabAvailable() : LeftHand->MakeGrabUnable();
+		InputComponent->GetAxisValue("LeftSecondaryGrasp") > 0 ? LeftHand->MakeSecondaryGraspAvailable() : LeftHand->MakeSecondaryGraspUnable();
+		InputComponent->GetAxisValue("RightSecondaryGrasp") > 0 ? RightHand->MakeSecondaryGraspAvailable() : RightHand->MakeSecondaryGraspUnable();
 	}
 	else
 		Hand_move_dirvec.X = 30000;
@@ -115,4 +114,6 @@ void APilotPawn::SetupPlayerInputComponent(class UInputComponent* InputComponent
 	InputComponent->BindAxis("LeftHandY");
 	InputComponent->BindAxis("LeftHandZ");
 	InputComponent->BindAxis("Grasp");
+	InputComponent->BindAxis("LeftSecondaryGrasp");
+	InputComponent->BindAxis("RightSecondaryGrasp");
 }

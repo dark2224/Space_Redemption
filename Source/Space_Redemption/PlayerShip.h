@@ -13,12 +13,13 @@ private:
 	bool IsAccelerating = false;
 	FRotator CurrentRotationSpeed = FRotator(0.0f,0.0f,0.0f);
 	float CurrentSpeed;
-	const float MaxSpeed = 10;
-	const float Acceleration = 20;
+	const float MaxSpeed = 21;
+	const float Acceleration = 30;
 	const float Decceleration = 20;
 	const float RotationAcceleration = 20;
 	const float RotationDeccelration = 20;
 	const float MaxRotationspeed = 10;
+	const float PitchClamper = 30;
 	float RotatorSize(struct FRotator param);
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Main")

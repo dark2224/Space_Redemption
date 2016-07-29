@@ -26,13 +26,13 @@ APlayerShip::APlayerShip()
 void APlayerShip::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	//GWorld->SpawnActor<
 }
 
 // Called every frame
 
-void APlayerShip::DefaultSet(class ATangibleActor* EmergencyLever_p, ATouchPad* GunPad_p, AHandleStick* HandleStick_p, class ATangibleActor* MissileButton_p, class APilotPawn* Pilot_p,class AMiniGun* minigun_p)
+void APlayerShip::DefaultSet(class ATangibleActor* EmergencyLever_p, ATouchPad* GunPad_p, AHandleStick* HandleStick_p, class ATangibleActor* MissileButton_p, class APilotPawn* Pilot_p, class AMiniGun* minigun_p)
 {
 	this->EmergencyLever = EmergencyLever_p;
 	this->GunPad = GunPad_p;
@@ -68,7 +68,12 @@ void APlayerShip::Tick(float DeltaTime)
 		if (RotatorSize(CurrentRotationSpeed) > MaxRotationspeed)
 			CurrentRotationSpeed = MaxRotationspeed / RotatorSize(CurrentRotationSpeed)*CurrentRotationSpeed;
 	}
-	SetActorRotation(GetActorRotation()+DeltaTime*FRotator(CurrentRotationSpeed.Pitch, CurrentRotationSpeed.Yaw,0));
+
+	if (GetActorRotation().Pitch > PitchClamper)
+		CurrentRotationSpeed.Pitch = fmin(0, CurrentRotationSpeed.Pitch);
+	if (GetActorRotation().Pitch < -PitchClamper)
+		CurrentRotationSpeed.Pitch = fmax(0, CurrentRotationSpeed.Pitch);
+	SetActorRotation(GetActorRotation() + DeltaTime*FRotator(CurrentRotationSpeed.Pitch, CurrentRotationSpeed.Yaw, 0));
 	//ÀüÁø
 	if (IsAccelerating)
 		CurrentSpeed += DeltaTime*Acceleration;
@@ -77,6 +82,17 @@ void APlayerShip::Tick(float DeltaTime)
 			CurrentSpeed -= DeltaTime*Decceleration;
 		else
 			CurrentSpeed = 0;
+	// Àü¹æ¹æÇâ ÀÌµ¿
+	// ¿¢¼¿ ¹â°í ÀÖÀ»¶§
+	if (HandleStick->GetisPushingSecond())
+	{
+		CurrentSpeed = (CurrentSpeed + DeltaTime*Acceleration > MaxSpeed) ? MaxSpeed : CurrentSpeed + DeltaTime*Acceleration;
+	}
+	else
+	{
+		CurrentSpeed = (CurrentSpeed - DeltaTime*Decceleration < 0) ? 0 : CurrentSpeed - DeltaTime*Decceleration;
+	}
+	AddActorLocalOffset(FVector(CurrentSpeed, 0, 0));
 	//AddActorLocalRotation((DeltaTime*CurrentRotationSpeed).Quaternion());
 	//AddActorWorldRotation(FRotator(0,0,GetActorRotation().Roll));
 	//SetActorRotation(FRotator(GetActorRotation().Pitch, GetActorRotation().Yaw,0.0f));

@@ -14,7 +14,7 @@ class SPACE_REDEMPTION_API APilotPawn : public APawn
 private:
 	FVector Deltahandloc;
 public:
-	const FVector RelativeArmposition = FVector(-17.839f, 0.0f, -161.363f);
+	const FVector RelativeArmposition = FVector(-16.0f, 0.0f, -315.0f);
 	// Sets default values for this pawn's properties
 	APilotPawn();
 
@@ -44,7 +44,7 @@ public:
 
 	//UPROPERTY(VisibleDefaultsOnly, Category = "Mesh")
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-		class UStaticMeshComponent* BodyMesh;
+		class USceneComponent* Origin;
 
 	//UPROPERTY(VisibleDefaultsOnly, Category = "Mesh")
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)

@@ -14,7 +14,7 @@ AMiniGun::AMiniGun()
 	RootComponent = CreateDefaultSubobject<USceneComponent>("RootComponent");
 	LaserPointer = CreateDefaultSubobject<UStaticMeshComponent>("LaserPointer");
 	RealGunMesh = CreateDefaultSubobject<UStaticMeshComponent>("RealGun");
-	LaserPointer->AttachToComponent(RootComponent,FAttachmentTransformRules::KeepRelativeTransform);
+	LaserPointer->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	RealGunMesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
@@ -43,6 +43,15 @@ void AMiniGun::Tick(float DeltaTime)
 			RealGunMesh->AddLocalRotation(DeltaTime*GunRotatingSpeed / RotatorSize(LaserPointer->RelativeRotation - RealGunMesh->RelativeRotation)*(LaserPointer->RelativeRotation - RealGunMesh->RelativeRotation));
 		}
 	}
+	if (Deccelerating)
+	{
+		CurrentRotationSpeedFactor -= DeltaTime;
+		if (CurrentRotationSpeedFactor < 0)
+		{
+			Deccelerating = false;
+			CurrentRotationSpeedFactor = 0;
+		}
+	}
 }
 void AMiniGun::LinkPad(ATouchPad* target) {
 	targetPad = target;
@@ -52,4 +61,13 @@ float AMiniGun::RotatorSize(FRotator param) {
 }
 float AMiniGun::SquaredRotatorSize(FRotator param) {
 	return param.Pitch*param.Pitch + param.Roll*param.Roll + param.Yaw*param.Yaw;
+}
+void AMiniGun::StartRotation() {
+	CurrentRotationSpeedFactor = 1;
+}
+void AMiniGun::StopRotation() {
+	Deccelerating = true;
+}
+float AMiniGun::GetRotationSpeed() {
+	return CurrentRotationSpeedFactor*GunRotatingSpeed;
 }

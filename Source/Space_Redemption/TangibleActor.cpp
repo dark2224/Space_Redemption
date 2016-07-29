@@ -27,7 +27,7 @@ void ATangibleActor::Tick( float DeltaTime )
 }
 
 
-void ATangibleActor::StartBeingApproached(class UHand* handparam, class USceneComponent *RealHandSceneParm) {
+void ATangibleActor::StartBeingApproached(class UHand* handparam, class USceneComponent *RealHandSceneParm, FRotator DeltaRotation) {
 	if (Status != Idle)
 		return;
 	//TargetPilotPawn = param;
@@ -39,7 +39,19 @@ void ATangibleActor::StartBeingApproached(class UHand* handparam, class USceneCo
 	Status = InteractionStatus::Approaching;
 	DistanceBeforeApproach = (TargetHand->GetComponentLocation()-DesiredHandTransform->GetComponentLocation()).Size();
 	RotatorBeforeApproach = TargetHand->GetComponentRotation();
+	ApproachingDeltaRotation = DeltaRotation;
+
 	NormalizedApproachingDistance = 1;
+}
+bool ATangibleActor::GetisPushingSecond() {
+	return isPushingSecond;
+}
+void ATangibleActor::SetIsPushingSecond(bool value) {
+	if (!isPushingSecond && value)
+		StartSecondaryGrap();
+	if (isPushingSecond && !value)
+		StopSecondaryGrap();
+	isPushingSecond = value;
 }
 /*
 void ATangibleActor::QuitInteraction(class UHand* param) {
