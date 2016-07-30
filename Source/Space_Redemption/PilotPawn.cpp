@@ -84,8 +84,8 @@ void APilotPawn::Tick(float DeltaTime)
 		Hand_move_dirvec.X = InputComponent->GetAxisValue("HandX");
 		Hand_move_dirvec.Y = InputComponent->GetAxisValue("HandY");
 		Hand_move_dirvec.Z = InputComponent->GetAxisValue("HandZ");
-		InputComponent->GetAxisValue("Grasp") > 0 ? RightHand->MakeGrabAvailable() : RightHand->MakeGrabUnable();
-		InputComponent->GetAxisValue("Grasp") > 0 ? LeftHand->MakeGrabAvailable() : LeftHand->MakeGrabUnable();
+		InputComponent->GetAxisValue("RightGrasp") > 0 ? RightHand->MakeGrabAvailable() : RightHand->MakeGrabUnable();
+		InputComponent->GetAxisValue("LeftGrasp") > 0 ? LeftHand->MakeGrabAvailable() : LeftHand->MakeGrabUnable();
 		InputComponent->GetAxisValue("LeftSecondaryGrasp") > 0 ? LeftHand->MakeSecondaryGraspAvailable() : LeftHand->MakeSecondaryGraspUnable();
 		InputComponent->GetAxisValue("RightSecondaryGrasp") > 0 ? RightHand->MakeSecondaryGraspAvailable() : RightHand->MakeSecondaryGraspUnable();
 	}
@@ -113,7 +113,8 @@ void APilotPawn::SetupPlayerInputComponent(class UInputComponent* InputComponent
 	InputComponent->BindAxis("LeftHandX");
 	InputComponent->BindAxis("LeftHandY");
 	InputComponent->BindAxis("LeftHandZ");
-	InputComponent->BindAxis("Grasp");
 	InputComponent->BindAxis("LeftSecondaryGrasp");
 	InputComponent->BindAxis("RightSecondaryGrasp");
+	InputComponent->BindAxis("LeftGrasp");
+	InputComponent->BindAxis("RightGrasp");
 }
