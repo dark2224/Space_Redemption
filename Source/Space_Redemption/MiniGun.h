@@ -13,6 +13,8 @@ private:
 	float CurrentRotationSpeedFactor = 0;
 	const FRotator Clamper = FRotator(22.5f, 70.0f, 0);
 	class ATouchPad* targetPad;
+	class AActor* Guntarget;
+	struct FVector AnticipatedHitLocation;
 	float RotatorSize(struct FRotator param);
 	float SquaredRotatorSize(struct FRotator param);
 	float GapBetweenFire = 0.5f;
@@ -27,8 +29,12 @@ protected:
 		UParticleSystemComponent* LeftFire;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Mesh")
 		UParticleSystemComponent* RightFire;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Mesh")
+		UParticleSystemComponent* BulletHitEffect;
 	UFUNCTION(BlueprintCallable, Category = "Rotation")
 		float GetRotationSpeed();
+	UFUNCTION(BlueprintCallable, Category = "Target")
+		void SetHitTargetAndLocation(AActor* target, FVector hitlocation);
 public:
 	// Sets default values for this actor's properties
 	AMiniGun();

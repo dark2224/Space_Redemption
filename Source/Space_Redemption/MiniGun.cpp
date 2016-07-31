@@ -16,6 +16,7 @@ AMiniGun::AMiniGun()
 	RealGunMesh = CreateDefaultSubobject<UStaticMeshComponent>("RealGun");
 	LeftFire = CreateDefaultSubobject<UParticleSystemComponent>("LeftMuzzleFire");
 	RightFire = CreateDefaultSubobject<UParticleSystemComponent>("RightMuzzleFire");
+	BulletHitEffect = CreateDefaultSubobject<UParticleSystemComponent>("BulletHitEffect");
 	LaserPointer->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	RealGunMesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	LeftFire->AttachToComponent(RealGunMesh, FAttachmentTransformRules::KeepRelativeTransform);
@@ -63,24 +64,35 @@ void AMiniGun::Tick(float DeltaTime)
 	// 발사중인가?
 	if (targetPad)
 		//targetPad->GetisPushingSecond()
-		if (true) {
+		if (targetPad->GetisPushingSecond()) {
 			AccumulatedTimeAfterFire += DeltaTime;
 			if (AccumulatedTimeAfterFire >= GapBetweenFire)
 			{
 				if (isleftturn)
 				{
-					//LeftFire->ActivateSystem();
-					//RightFire->DeactivateSystem();
+					LeftFire->ActivateSystem();
+					RightFire->DeactivateSystem();
 				}
 				else
 				{
-					//RightFire->ActivateSystem();
-					//LeftFire->DeactivateSystem();
+					RightFire->ActivateSystem();
+					LeftFire->DeactivateSystem();
+				}
+				if (Guntarget) {
+					BulletHitEffect->SetWorldLocationAndRotation(AnticipatedHitLocation, (-LaserPointer->GetForwardVector()).ToOrientationRotator());
+					BulletHitEffect->ActivateSystem();
+				}
+				else {
+					BulletHitEffect->DeactivateSystem();
 				}
 				AccumulatedTimeAfterFire -= GapBetweenFire;
 				isleftturn = !isleftturn;
 			}
 		}
+}
+void AMiniGun::SetHitTargetAndLocation(AActor* target, FVector hitlocation) {
+	Guntarget = target;
+	AnticipatedHitLocation = hitlocation;
 }
 void AMiniGun::LinkPad(ATouchPad* target) {
 	targetPad = target;
