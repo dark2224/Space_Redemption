@@ -14,8 +14,12 @@ AMiniGun::AMiniGun()
 	RootComponent = CreateDefaultSubobject<USceneComponent>("RootComponent");
 	LaserPointer = CreateDefaultSubobject<UStaticMeshComponent>("LaserPointer");
 	RealGunMesh = CreateDefaultSubobject<UStaticMeshComponent>("RealGun");
+	LeftFire = CreateDefaultSubobject<UParticleSystemComponent>("LeftMuzzleFire");
+	RightFire = CreateDefaultSubobject<UParticleSystemComponent>("RightMuzzleFire");
 	LaserPointer->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	RealGunMesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	LeftFire->AttachToComponent(RealGunMesh, FAttachmentTransformRules::KeepRelativeTransform);
+	RightFire->AttachToComponent(RealGunMesh, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 // Called when the game starts or when spawned
@@ -25,7 +29,11 @@ void AMiniGun::BeginPlay()
 
 }
 
-// Called every frame
+// Minigun.cpp
+
+
+
+
 void AMiniGun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -52,6 +60,27 @@ void AMiniGun::Tick(float DeltaTime)
 			CurrentRotationSpeedFactor = 0;
 		}
 	}
+	// 발사중인가?
+	if (targetPad)
+		//targetPad->GetisPushingSecond()
+		if (true) {
+			AccumulatedTimeAfterFire += DeltaTime;
+			if (AccumulatedTimeAfterFire >= GapBetweenFire)
+			{
+				if (isleftturn)
+				{
+					//LeftFire->ActivateSystem();
+					//RightFire->DeactivateSystem();
+				}
+				else
+				{
+					//RightFire->ActivateSystem();
+					//LeftFire->DeactivateSystem();
+				}
+				AccumulatedTimeAfterFire -= GapBetweenFire;
+				isleftturn = !isleftturn;
+			}
+		}
 }
 void AMiniGun::LinkPad(ATouchPad* target) {
 	targetPad = target;
