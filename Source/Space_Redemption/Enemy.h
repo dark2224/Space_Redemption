@@ -26,11 +26,11 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 public:
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
-		Enemy_Type Get_Type();
+		Enemy_Type	Get_Type();
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
-		bool Get_Delay();
+		bool		Get_Delay();
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
-		int Get_Hp();
+		int			Get_Hp();
 public:
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
 		void Set_Hp(int iHp);
@@ -39,8 +39,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
 		void Set_EnemyType(Enemy_Type eEnemyType);
 public:
+	UFUNCTION(BlueprintCallable, Category = "Enemy")
+		bool	Booster_Delay();
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
 	float									m_fDelay;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
+	float									m_fBoosterTime;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
+	float									m_fOriBoosterTime;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
 	int										m_iHp;
 private:

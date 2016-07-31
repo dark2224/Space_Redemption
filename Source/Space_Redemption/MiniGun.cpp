@@ -4,6 +4,7 @@
 #include "TouchPad.h"
 #include <cmath>
 #include "MiniGun.h"
+#include "Enemy.h"
 
 
 // Sets default values
@@ -81,6 +82,7 @@ void AMiniGun::Tick(float DeltaTime)
 				if (Guntarget) {
 					BulletHitEffect->SetWorldLocationAndRotation(AnticipatedHitLocation, (-LaserPointer->GetForwardVector()).ToOrientationRotator());
 					BulletHitEffect->ActivateSystem();
+					Guntarget->Set_Damage(2000000);
 				}
 				else {
 					BulletHitEffect->DeactivateSystem();
@@ -90,7 +92,7 @@ void AMiniGun::Tick(float DeltaTime)
 			}
 		}
 }
-void AMiniGun::SetHitTargetAndLocation(AActor* target, FVector hitlocation) {
+void AMiniGun::SetHitTargetAndLocation(AEnemy* target, FVector hitlocation) {
 	Guntarget = target;
 	AnticipatedHitLocation = hitlocation;
 }

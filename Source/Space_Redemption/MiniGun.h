@@ -13,7 +13,7 @@ private:
 	float CurrentRotationSpeedFactor = 0;
 	const FRotator Clamper = FRotator(22.5f, 70.0f, 0);
 	class ATouchPad* targetPad;
-	class AActor* Guntarget;
+	class AEnemy* Guntarget;
 	struct FVector AnticipatedHitLocation;
 	float RotatorSize(struct FRotator param);
 	float SquaredRotatorSize(struct FRotator param);
@@ -34,7 +34,7 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Rotation")
 		float GetRotationSpeed();
 	UFUNCTION(BlueprintCallable, Category = "Target")
-		void SetHitTargetAndLocation(AActor* target, FVector hitlocation);
+		void SetHitTargetAndLocation(AEnemy* target, FVector hitlocation);
 public:
 	// Sets default values for this actor's properties
 	AMiniGun();

@@ -2,8 +2,6 @@
 
 #include "Space_Redemption.h"
 
-
-
 #include "EnemyGroupManager.h"
 
 AEnemyGroupManager::AEnemyGroupManager()
@@ -180,10 +178,10 @@ void AEnemyGroupManager::TriangleFormation(FString strGroupName)
 	FVector		VecPosition = (*iter_begin)->GetActorLocation();
 	FVector		VecSpacePosition(0, 0, 0);
 
-	int											iIndex(0);
-	int											iCount(0);
-	int											iAddValue(1);
-	float										fSpcaceCal(0.0f);
+	int								iIndex(0);
+	int								iCount(0);
+	int								iAddValue(1);
+	float							fSpcaceCal(0.0f);
 
 	++iter_begin;
 

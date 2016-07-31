@@ -9,7 +9,7 @@ AGuided_Missile::AGuided_Missile()
 	, m_fParabolaTime(0.0f),	m_fTime(0.0f)
 	, m_fRotationRoll(0.0f),	m_fAngle(0.0f)
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 AGuided_Missile::~AGuided_Missile()

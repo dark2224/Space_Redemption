@@ -64,7 +64,7 @@ void APlayerShip::Tick(float DeltaTime)
 	}
 	else
 	{
-		CurrentRotationSpeed += DeltaTime*RotationAcceleration*FRotator(HandleStick->GetNormalizedFacingVector().X, HandleStick->GetNormalizedFacingVector().Y, 0);
+		CurrentRotationSpeed += DeltaTime*RotationAcceleration*FRotator(-HandleStick->GetNormalizedFacingVector().X, HandleStick->GetNormalizedFacingVector().Y, 0);
 		if (RotatorSize(CurrentRotationSpeed) > MaxRotationspeed)
 			CurrentRotationSpeed = MaxRotationspeed / RotatorSize(CurrentRotationSpeed)*CurrentRotationSpeed;
 	}
