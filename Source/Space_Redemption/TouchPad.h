@@ -6,13 +6,14 @@
 #include "TouchPad.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class SPACE_REDEMPTION_API ATouchPad : public ATangibleActor
 {
 	GENERATED_BODY()
 private:
+	bool IsFiring = false;
 	UPROPERTY()
 		UAudioComponent* MinigunSoundLoop;
 	UPROPERTY()
@@ -20,6 +21,8 @@ private:
 	class AMiniGun* Minigun;
 	FVector2D MappingCoordinate;
 protected:
+	UFUNCTION(BlueprintCallable, Category = "CheckingStatus")
+		bool GetIsFiring();
 	UFUNCTION(BlueprintCallable, Category = "Initialization")
 		void SetMappingCoordinate(FVector2D value);
 	UFUNCTION(BlueprintCallable, Category = "DefaultSet")

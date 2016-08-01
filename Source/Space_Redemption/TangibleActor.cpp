@@ -38,7 +38,7 @@ void ATangibleActor::StartBeingApproached(class UHand* handparam, class USceneCo
 	TargetHand->StartApproaching(this);
 	Status = InteractionStatus::Approaching;
 	DistanceBeforeApproach = (TargetHand->GetComponentLocation()-DesiredHandTransform->GetComponentLocation()).Size();
-	RotatorBeforeApproach = TargetHand->GetComponentRotation();
+	RotatorBeforeApproach = TargetHand->RelativeRotation;
 	ApproachingDeltaRotation = DeltaRotation;
 
 	NormalizedApproachingDistance = 1;

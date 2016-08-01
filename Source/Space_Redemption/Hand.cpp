@@ -78,8 +78,8 @@ void UHand::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 			SetWorldLocation(_RealHandScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal());
 			//FollowTargetWithSpeed(_ShoulderScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal(),DeltaTime);
 		}
-		SetWorldRotation(TargetTangibleActor->GetRotatorBeforeApproach());
-		AddWorldRotation(TargetTangibleActor->GetApproachingDeltaRotation()*(1- TargetTangibleActor->GetNormalizedApproachingDistance()));
+		SetRelativeRotation(TargetTangibleActor->GetRotatorBeforeApproach());
+		AddRelativeRotation(TargetTangibleActor->GetApproachingDeltaRotation()*(1- TargetTangibleActor->GetNormalizedApproachingDistance()));
 		//FollowTargetWithSpeed(TargetTangibleActor->GetNormalizedApproachingDistance()*TargetTangibleActor->GetRotatorBeforeApproach() + (1 - TargetTangibleActor->GetNormalizedApproachingDistance())*TargetTangibleActor->GetDesiredHandTransform()->GetComponentTransform().Rotator(), DeltaTime);
 		break;
 	case Interacting:

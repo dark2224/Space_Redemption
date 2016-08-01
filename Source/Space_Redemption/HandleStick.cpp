@@ -15,13 +15,18 @@ FVector2D AHandleStick::GetNormalizedFacingVector() {
 	return _NormalizedFacingVector;
 }
 void AHandleStick::StartSecondaryGrap() {
+	IsGoingForward = true;
 	MovingLoopSound->FadeIn(0.7f);
 	//MovingLoopSound->Play();
 }
 void AHandleStick::StopSecondaryGrap() {
+	IsGoingForward = false;
 	MovingLoopSound->FadeOut(0.7f,0.0f);
 	//MovingLoopSound->Stop();
 }
 void AHandleStick::SetSound(UAudioComponent* reference){
 	MovingLoopSound = reference;
+}
+bool AHandleStick::GetIsGoingForward() {
+	return IsGoingForward;
 }

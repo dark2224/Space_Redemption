@@ -13,6 +13,7 @@ class SPACE_REDEMPTION_API AHandleStick : public ATangibleActor
 {
 	GENERATED_BODY()
 private:
+	bool IsGoingForward = false;
 	UPROPERTY()
 	UAudioComponent* MovingLoopSound;
 	FVector2D _NormalizedFacingVector;
@@ -24,7 +25,9 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "DefaultSet")
 		void SetSound(UAudioComponent* reference);
 public:
-	//AHandleStick();
+	UFUNCTION(BlueprintCallable, Category = "InsrumentStatus")
+		bool GetIsGoingForward();
+		//AHandleStick();
 	UFUNCTION(BlueprintCallable, Category = "InsrumentStatus")
 		virtual FVector2D GetNormalizedFacingVector();
 	//UFUNCTION(BlueprintCallable, Category = "InsrumentStatus")
