@@ -17,7 +17,7 @@ private:
 	struct FVector AnticipatedHitLocation;
 	float RotatorSize(struct FRotator param);
 	float SquaredRotatorSize(struct FRotator param);
-	float GapBetweenFire = 0.5f;
+	float GapBetweenFire = 0.1f;
 	float AccumulatedTimeAfterFire = 0;
 	bool isleftturn = false;
 protected:
@@ -31,10 +31,14 @@ protected:
 		UParticleSystemComponent* RightFire;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Mesh")
 		UParticleSystemComponent* BulletHitEffect;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+		UAudioComponent* BulletImpactSound;
 	UFUNCTION(BlueprintCallable, Category = "Rotation")
 		float GetRotationSpeed();
 	UFUNCTION(BlueprintCallable, Category = "Target")
 		void SetHitTargetAndLocation(AEnemy* target, FVector hitlocation);
+	UFUNCTION(BlueprintCallable, Category = "Target")
+		void ResetTarget();
 public:
 	// Sets default values for this actor's properties
 	AMiniGun();
@@ -46,4 +50,5 @@ public:
 	void LinkPad(class ATouchPad* target);
 	void StartRotation();
 	void StopRotation();
+	void SetBulletImpactSound(UAudioComponent* value);
 };

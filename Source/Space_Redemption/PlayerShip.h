@@ -12,6 +12,7 @@ class SPACE_REDEMPTION_API APlayerShip : public AActor
 private:
 	bool IsAccelerating = false;
 	FRotator CurrentRotationSpeed = FRotator(0.0f,0.0f,0.0f);
+	FRotator TargetRotationSpeed = FRotator(0.0f, 0.0f, 0.0f);
 	float CurrentSpeed;
 	const float MaxSpeed = 21;
 	const float Acceleration = 30;
@@ -20,6 +21,7 @@ private:
 	const float RotationDeccelration = 20;
 	const float MaxRotationspeed = 10;
 	const float PitchClamper = 30;
+	const float IgnorableAxisValue = 0.1f;
 	float RotatorSize(struct FRotator param);
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Main")

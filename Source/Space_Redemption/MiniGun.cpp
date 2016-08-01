@@ -28,7 +28,6 @@ AMiniGun::AMiniGun()
 void AMiniGun::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 // Minigun.cpp
@@ -82,6 +81,7 @@ void AMiniGun::Tick(float DeltaTime)
 				if (Guntarget) {
 					BulletHitEffect->SetWorldLocationAndRotation(AnticipatedHitLocation, (-LaserPointer->GetForwardVector()).ToOrientationRotator());
 					BulletHitEffect->ActivateSystem();
+					BulletImpactSound->Play();
 					Guntarget->Set_Damage(2000000);
 				}
 				else {
@@ -113,4 +113,10 @@ void AMiniGun::StopRotation() {
 }
 float AMiniGun::GetRotationSpeed() {
 	return CurrentRotationSpeedFactor*GunRotatingSpeed;
+}
+void AMiniGun::ResetTarget() {
+	Guntarget = nullptr;
+}
+void AMiniGun::SetBulletImpactSound(UAudioComponent* value) {
+	BulletImpactSound = value;
 }
