@@ -3,15 +3,10 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "Alliance.generated.h"
 
-UENUM(BlueprintType)
-enum class Alliance_Type : uint8
-{
-	ALLIANCE_Alive UMETA(DisplayName = "Alliance_Alive"),
-	ALLIANCE_DEATH UMETA(DisplayName = "Alliance_Death"),
-	ALLIANCE_END UMETA(DisplayName = "Alliance_End"),
-};
+#include "AI_State.h"
+
+#include "Alliance.generated.h"
 
 UCLASS()
 class SPACE_REDEMPTION_API AAlliance : public AActor
@@ -26,21 +21,29 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 public:
 	UFUNCTION(BlueprintCallable, Category = "Alliance")
-		Alliance_Type	Get_Type();
+		State_Type		Get_Type();
 	UFUNCTION(BlueprintCallable, Category = "Alliance")
 		bool			Get_Delay();
 	UFUNCTION(BlueprintCallable, Category = "Alliance")
 		int				Get_Hp();
+	UFUNCTION(BlueprintCallable, Category = "Enemy")
+		int				Get_Dagame();
+	UFUNCTION(BlueprintCallable, Category = "Enemy")
+		bool			Get_Shoot();
 public:
 	UFUNCTION(BlueprintCallable, Category = "Alliance")
 		void			Set_Hp(int iHp);
 	UFUNCTION(BlueprintCallable, Category = "Alliance")
 		void			Set_Damage(int iDamage);
 	UFUNCTION(BlueprintCallable, Category = "Alliance")
-		void			Set_AllianceType(Alliance_Type eAllianceType);
+		void			Set_AllianceType(State_Type eAllianceType);
+	UFUNCTION(BlueprintCallable, Category = "Alliance")
+		void			Set_Shoot(bool bShoot);
 public:
 	UFUNCTION(BlueprintCallable, Category = "Alliance")
 		bool			Booster_Delay();
+	UFUNCTION(BlueprintCallable, Category = "Alliance")
+		bool			Shoot_Delay();
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Alliance")
 		float									m_fDelay;
@@ -49,9 +52,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Alliance")
 		float									m_fOriBoosterTime;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Alliance")
+		float									m_fShootDelay;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Alliance")
+		float									m_fOriShootDelay;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Alliance")
 		int										m_iHp;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Alliance")
+		int										m_iDamage;
 private:
-	Alliance_Type								m_eAlliance_Type;
+	State_Type									m_eAlliance_Type;
 private:
 	float										m_fTime;
+	bool										m_bShoot;
 };

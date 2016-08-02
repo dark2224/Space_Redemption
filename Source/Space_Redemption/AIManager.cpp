@@ -1,77 +1,192 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Space_Redemption.h"
+
+#include "Alliance.h"
+#include "Enemy.h"
+
 #include "AIManager.h"
 
-AIManager::AIManager()
+// Sets default values
+AAIManager::AAIManager()
+	: m_fDistance(0.0f),		m_fGroupSpace(0.0f)
+	, m_bShootCheck(false)
 {
+ 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = false;
 }
 
-AIManager::~AIManager()
+// Called when the game starts or when spawned
+void AAIManager::BeginPlay()
 {
+	Super::BeginPlay();
 }
 
-TArray<class AAlliance*>* AIManager::Get_Alliance(void)
+// Called every frame
+void AAIManager::Tick( float DeltaTime )
 {
-	return &m_AlliacneArray;
+	Super::Tick( DeltaTime );
 }
 
-TArray<class AEnemy*>* AIManager::Get_Enemy(void)
+bool AAIManager::Get_Shoot()
 {
-	return &m_EnemyArray;
+	return m_bShootCheck;
 }
 
-void AIManager::Set_Alliance(TArray<class AAlliance*>* pAllianceArray)
+TArray<class AAlliance*> AAIManager::Get_Alliance(void)
 {
-	m_AlliacneArray = *pAllianceArray;
+	return m_AlliacneArray;
 }
 
-void AIManager::Set_Enemy(TArray<class AEnemy*>* pEnamyArray)
+TArray<class AEnemy*> AAIManager::Get_Enemy(void)
 {
-	m_EnemyArray = *pEnamyArray;
+	return m_EnemyArray;
 }
 
-void AIManager::ForwardMove_Array(Unit_Type eUnitType, float& DeltaTimeSeconds, float& fSpeed)
+void AAIManager::Set_Alliance(TArray<class AAlliance*> pAllianceArray)
 {
-	FVector				vPosition(0.0f, 0.0f, 0.0f);
+	m_AlliacneArray = pAllianceArray;
+}
 
-	if (Unit_Type::Unit_Alliance == eUnitType)
+void AAIManager::Set_Enemy(TArray<class AEnemy*> pEnamyArray)
+{
+	m_EnemyArray = pEnamyArray;
+}
+
+void AAIManager::AI_Battle()
+{
+	/*if (m_EnemyArray.Num() <= 0)
+		return;
+
+	if (m_AlliacneArray.Num() <= 0)
+		return;
+
+	for (int index = 0; index < m_AlliacneArray.Num(); ++index)
 	{
-		for (int index = 0; index < m_AlliacneArray.Num(); ++index)
-		{
-			vPosition.X = m_AlliacneArray[index]->GetActorLocation().X + fSpeed * DeltaTimeSeconds;
-			m_AlliacneArray[index]->SetActorLocation(vPosition);
-		}
-	}
+		if(m_EnemyArray.Num() < index)
+			break;
 
-	else if (Unit_Type::Unit_Enemy == eUnitType)
-	{
-		for (int index = 0; index < m_EnemyArray.Num(); ++index)
-		{
-			vPosition.X = m_EnemyArray[index]->GetActorLocation().X + fSpeed * DeltaTimeSeconds;
-			m_EnemyArray[index]->SetActorLocation(vPosition);
-		}
-	}
+		AI_Shoot(index);
+	}*/
 }
 
-void AIManager::Trace_Array(Unit_Type eUnitType, FVector* pTracePosition, float& DeltaTimeSeconds, float& fSpeed, int& iIndex)
+void AAIManager::AI_Shoot(EUnit_Type eUnitType, int index)
 {
+
+}
+
+void AAIManager::Trace(EUnit_Type eUnitType, float fSpeed)
+{
+	if (m_EnemyArray.Num() <= 0)
+		return;
+
+	if (m_AlliacneArray.Num() <= 0)
+		return;
+
+	FVector				vZero(0.0f, 0.0f, 0.0f);
 	FVector				vPosition(0.0f, 0.0f, 0.0f);
 	FVector				vTracePosition(0.0f, 0.0f, 0.0f);
 
-	if (Unit_Type::Unit_Alliance == eUnitType)
+	float				fDistance(0.0f);
+
+	/*if (EUnit_Type::UNIT_ALLIANCE == eUnitType)
 	{
-		vTracePosition = *pTracePosition - m_AlliacneArray[iIndex]->GetActorLocation();
-		vTracePosition.GetSafeNormal();
-		vPosition += vTracePosition * DeltaTimeSeconds * fSpeed;
-		m_AlliacneArray[iIndex]->SetActorLocation(vPosition);
+		for (int index = 0; index < m_AlliacneArray.Num(); ++index)
+		{
+			if(m_EnemyArray.Num() < index)
+				break;
+
+			fDistance = FMath::Abs(FVector::Dist(m_EnemyArray[index]->GetActorLocation(), m_AlliacneArray[index]->GetActorLocation()));
+
+			if (fDistance >= m_fDistance)
+				break;
+
+			vPosition = m_AlliacneArray[index]->GetActorLocation();
+
+			vTracePosition = m_EnemyArray[index]->GetActorLocation() - m_AlliacneArray[index]->GetActorLocation();
+			vTracePosition.GetSafeNormal();
+			vPosition += vTracePosition * GetWorld()->DeltaTimeSeconds * fSpeed;
+			m_AlliacneArray[index]->SetActorLocation(vPosition);
+		}
+	}*/
+
+	/*else */if (EUnit_Type::UNIT_ENEMEY == eUnitType)
+	{
+		for (int index = 0; index < m_EnemyArray.Num(); ++index)
+		{
+			if(m_AlliacneArray.Num() < index)
+				break;
+
+			fDistance =  FMath::Abs(FVector::Dist(m_EnemyArray[index]->GetActorLocation(), m_AlliacneArray[index]->GetActorLocation()));
+			
+			if (fDistance >= m_fDistance)
+			{
+				vPosition = m_EnemyArray[index]->GetActorLocation();
+
+				vTracePosition = m_AlliacneArray[index]->GetActorLocation() - m_EnemyArray[index]->GetActorLocation();
+				vTracePosition.GetSafeNormal();
+				vPosition += vTracePosition * GetWorld()->DeltaTimeSeconds * fSpeed;
+				vPosition.Z = m_AlliacneArray[index]->GetActorLocation().Z;
+				m_EnemyArray[index]->SetActorLocation(vPosition);
+
+				m_AlliacneArray[index]->Set_Shoot(false);
+				m_EnemyArray[index]->Set_Shoot(false);
+			}
+
+			else if( fDistance < m_fDistance)
+			{
+				m_AlliacneArray[index]->Set_Shoot(true);
+				m_EnemyArray[index]->Set_Shoot(true);
+			}
+		}
+	}
+}
+
+void AAIManager::Triangle(EUnit_Type eUnit_Type)
+{
+	/*
+	ARRAYACTOR::TIterator			iter_begin = TarrayActor[0];
+
+	FVector		VecPosition = (*iter_begin)->GetActorLocation();
+	FVector		VecSpacePosition(0, 0, 0);
+
+	int								iIndex(0);
+	int								iCount(0);
+	int								iAddValue(1);
+	float							fSpcaceCal(0.0f);
+
+	++iter_begin;
+
+	for (int index = 0; index != TarrayActor->Num(); ++index)
+	{
+		if (0 == iIndex)
+	{
+		++iIndex;
+		continue;
 	}
 
-	else if (Unit_Type::Unit_Enemy == eUnitType)
+	fSpcaceCal = m_fSpace * iAddValue;
+
+	if (iIndex & 1)
 	{
-		vTracePosition = *pTracePosition - m_EnemyArray[iIndex]->GetActorLocation();
-		vTracePosition.GetSafeNormal();
-		vPosition += vTracePosition * DeltaTimeSeconds * fSpeed;
-		m_EnemyArray[iIndex]->SetActorLocation(vPosition);
+		VecSpacePosition = FVector(VecPosition.X - fSpcaceCal, VecPosition.Y - fSpcaceCal, VecPosition.Z);
+		++iCount;
 	}
+
+	else
+	{
+		VecSpacePosition = FVector(VecPosition.X - fSpcaceCal, VecPosition.Y + fSpcaceCal, VecPosition.Z);
+		++iCount;
+	}
+
+	(*iter_begin)->SetActorLocation(VecSpacePosition);
+
+	if (iCount >= 2)
+	{
+		++iAddValue;
+		iCount = 0;
+	}
+
+	++iIndex;
+	++iter_begin;*/
 }

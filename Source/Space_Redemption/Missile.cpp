@@ -5,10 +5,10 @@
 
 // Sets default values
 AMissile::AMissile()
-	: m_eDir(Direction_Type::DIR_Z),	m_fMissileSpeed(0.0f)
-	, m_fMaxTime(0.0f),					m_vOriPosition(0.0f, 0.0f, 0.0f)
-	, m_bStartCheck(false),				m_fOriDelay(0.0f)
-	, m_fDelay(0.0f)
+	: m_vOriPosition(0.0f, 0.0f, 0.0f),		m_bStartCheck(false)
+	, m_fMissileSpeed(0.0f),				m_fMaxTime(0.0f)
+	, m_fOriDelay(0.0f),					m_fDelay(0.0f)
+	, m_fBooster(0.0f),						m_fOriBooster(0.0f)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
@@ -36,16 +36,28 @@ bool AMissile::Get_StartCheck()
 	return m_bStartCheck;
 }
 
+bool AMissile::BoosterDelay()
+{
+	if (false == m_bStartCheck)
+		return false;
+
+	m_fBooster -= GetWorld()->DeltaTimeSeconds;
+
+	if (m_fBooster <= 0)
+	{
+		m_fBooster = m_fOriBooster;
+
+		return true;
+	}
+
+	return false;
+}
+
 void AMissile::Set_Postion(FVector vPosition)
 {
 	m_vOriPosition = vPosition;
 
 	SetActorLocation(vPosition);
-}
-
-void AMissile::Set_Dir(Direction_Type eType)
-{
-	m_eDir = eType;
 }
 
 void AMissile::Set_MaxTime(float fMaxTime)
@@ -58,21 +70,12 @@ void AMissile::Set_StartCheck(bool bStartCheck)
 	m_bStartCheck = bStartCheck;
 }
 
-void AMissile::Initialize_Missile(FVector vPosition, Direction_Type eDirType, float fSpeed, float fMaxTime, float fDelay)
+void AMissile::Initialize_Missile( float fSpeed, float fMaxTime, float fDelay)
 {
-	m_vOriPosition = vPosition;
-	m_eDir = eDirType;
 	m_fMissileSpeed = fSpeed;
 	m_fMaxTime = fMaxTime;
 	m_fOriDelay = fDelay;
 	m_fDelay = fDelay;
-
-	SetActorLocation(vPosition);
-}
-
-Direction_Type AMissile::Get_Dir()
-{
-	return m_eDir;
 }
 
 float AMissile::Get_Speed()
@@ -100,4 +103,5 @@ void AMissile::Reset_Missile()
 	SetActorLocation(m_vOriPosition);
 	m_fDelay = m_fOriDelay;
 	m_bStartCheck = false;
+	m_fBooster = m_fOriBooster;
 }

@@ -8,14 +8,6 @@
 
 #include "AllianceManager.generated.h"
 
-UENUM(BlueprintType)
-enum class EAlliance_Formation : uint8
-{
-	FORMATION_TRIANGLE	UMETA(DisplayName = "Formation_Triangle"),
-	FORMATION_RECT	UMETA(DisplayName = "Formation_Rect"),
-	FORMATION_END	UMETA(DisplayName = "Formation_End")
-};
-
 UCLASS()
 class SPACE_REDEMPTION_API AAllianceManager : public AActor
 {
@@ -28,29 +20,12 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 public:
-	UFUNCTION(BlueprintCallable, Category = "EnemyGroup")
+	UFUNCTION(BlueprintCallable, Category = "AllianceGroup")
 		TArray<class AAlliance*> Get_Alliance();
-public:
-	UFUNCTION(BlueprintCallable, Category = "EnemyGroup")
-		void Set_GroupSapce(float fSpace);
-	UFUNCTION(BlueprintCallable, Category = "EnemyGroup")
-		void Set_Fomation(FString strGroupName, EAlliance_Formation eFormatio);
-public: // Initialize and Group Formation
-	UFUNCTION(BlueprintCallable, Category = "EnemyGroup")
-		void Inset_Alliacne(FString strGroupName, class AAlliance* pActor);
+public: // Inset
+	UFUNCTION(BlueprintCallable, Category = "AllianceGroup")
+		void Inset_Alliacne(TArray<class AAlliance*> AAlliance);
 private:
-	TArray<class AAlliance*>*							Get_Array(FString strGroupName);
-private: // Group
-	void												TriangleFormation(FString strGroupName);
-private:
-	TMap<FString, TArray<class AAlliance*>>				m_MapAlliance;
-	typedef TMap<FString, TArray<class AAlliance*>>		MAPALLIANCE;
+	TArray<class AAlliance*>							m_AllianceArray;
 	typedef TArray<class AAlliance*>					ALLIANCEARRAY;
-private:
-	TArray<FString>										m_GroupNameArray;
-	typedef TArray<FString>								ARRAYGROUPNAME;
-private:
-	EAlliance_Formation									m_eFormation;
-private:
-	float												m_fSpace;
 };

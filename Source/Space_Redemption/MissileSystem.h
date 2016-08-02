@@ -4,6 +4,7 @@
 
 #include "GameFramework/Actor.h"
 
+#include "Missile.h"
 #include "Enemy.h"
 
 #include "MissileSystem.generated.h"
@@ -21,15 +22,15 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 public:
 	UFUNCTION(BlueprintCallable, Category = "Missile_System")
-		void	Insert_Missile(class AActor* pMissile);
+		void	Insert_Missile(TArray<class AMissile*> Missile);
 public:
 	UFUNCTION(BlueprintCallable, Category = "Missile_System")
 		bool	Get_EnemyArray();
 	UFUNCTION(BlueprintCallable, Category = "Missile_System")
-		TArray<class AActor*>	Get_MissileArray();
+		TArray<class AMissile*>	Get_MissileArray();
 protected:
-	TArray<class AActor*>						m_MissileArray;
-	typedef TArray<class AActor*>				MISSILEARRAY;
+	TArray<class AMissile*>						m_MissileArray;
+	typedef TArray<class AMissile*>				MISSILEARRAY;
 	TArray<class AEnemy*>						m_EnemyArray;
 	typedef TArray<class AEnemy*>				ENEMYARRAY;
 };

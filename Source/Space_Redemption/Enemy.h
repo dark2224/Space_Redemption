@@ -3,15 +3,10 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "Enemy.generated.h"
 
-UENUM(BlueprintType)
-enum class Enemy_Type : uint8
-{
-	ENEMY_Alive UMETA(DisplayName = "Enemy_Alive"),
-	ENEMY_DEATH UMETA(DisplayName = "Enemy_Death"),
-	ENEMY_END UMETA(DisplayName = "Enemy_End"),
-};
+#include "AI_State.h"
+
+#include "Enemy.generated.h"
 
 UCLASS()
 class SPACE_REDEMPTION_API AEnemy : public AActor
@@ -26,21 +21,29 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 public:
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
-		Enemy_Type	Get_Type();
+		State_Type	Get_Type();
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
 		bool		Get_Delay();
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
 		int			Get_Hp();
+	UFUNCTION(BlueprintCallable, Category = "Enemy")
+		int			Get_Dagame();
+	UFUNCTION(BlueprintCallable, Category = "Enemy")
+		bool		Get_Shoot();
 public:
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
 		void Set_Hp(int iHp);
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
 		void Set_Damage(int iDamage);
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
-		void Set_EnemyType(Enemy_Type eEnemyType);
+		void Set_EnemyType(State_Type eEnemyType);
+	UFUNCTION(BlueprintCallable, Category = "Enemy")
+		void			Set_Shoot(bool bShoot);
 public:
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
 		bool	Booster_Delay();
+	UFUNCTION(BlueprintCallable, Category = "Alliance")
+		bool			Shoot_Delay();
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
 	float									m_fDelay;
@@ -49,9 +52,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
 	float									m_fOriBoosterTime;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
+	float									m_fShootDelay;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
+	float									m_fOriShootDelay;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
 	int										m_iHp;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
+	int										m_iDamage;
 private:
-	Enemy_Type								m_eEnemy_Type;
+	State_Type								m_eEnemy_Type;
 private:
 	float									m_fTime;
+	bool									m_bShoot;
 };

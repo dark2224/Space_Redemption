@@ -14,7 +14,6 @@ class SPACE_REDEMPTION_API AGuided_Missile : public AMissileSystem
 	GENERATED_BODY()
 public:
 	AGuided_Missile();
-	~AGuided_Missile();
 public:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay();
@@ -23,11 +22,17 @@ public:
 public:
 	UFUNCTION(BlueprintCallable, Category = "Guided_Missile")
 	void Set_Enemy(TArray<class AEnemy*> EnemyArray);
+	UFUNCTION(BlueprintCallable, Category = "Guided_Missile")
+	void Set_Position(TArray<FVector> Position);
+	UFUNCTION(BlueprintCallable, Category = "Guided_Missile")
+	void Set_Distance(float fDistance);
 public:
 	UFUNCTION(BlueprintCallable, Category = "Guided_Missile")
-	void Missile_Move(int iIndex);
+	void							Trace_Enemy();
 	UFUNCTION(BlueprintCallable, Category = "Guided_Missile")
-	void Trace_Enemy();
+	void							Missile_Move(int iIndex);
+	UFUNCTION(BlueprintCallable, Category = "Guided_Missile")
+	void							Second_Move();
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Guided_Missile")
 	float							m_fGravity;
@@ -37,11 +42,12 @@ public:
 	float							m_fParabolaTime;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Guided_Missile")
 	float							m_fRotationRoll;
-private:		// Get
-	bool Check_Enemy(int iIndex);
 private:
-	FVector Parabola(int iIndex);
+	void							Parabola(FVector* pOut, FVector StartPoistion, FVector EndPoisiton);
+private:
+	TArray<FVector>					m_VecPosition;
 private:
 	float							m_fTime;
 	float							m_fAngle;
+	float							m_fDistance;
 };

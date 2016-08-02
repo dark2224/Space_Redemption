@@ -5,9 +5,11 @@
 
 // Sets default values
 AEnemy::AEnemy()
-	: m_fDelay(0.0f),						m_fBoosterTime(0.0f)
-	, m_iHp(0),								m_fOriBoosterTime(0.0f)
-	, m_eEnemy_Type(Enemy_Type::ENEMY_END),	m_fTime(0.0f)
+	: m_fDelay(0.0f),			m_fBoosterTime(0.0f)
+	, m_fOriBoosterTime(0.0f),	m_fShootDelay(0.0f)
+	, m_fOriShootDelay(0.0f),	m_iHp(0)
+	, m_iDamage(0),				m_eEnemy_Type(State_Type::STATE_END)
+	, m_fTime(0.0f),			m_bShoot(false)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
@@ -25,7 +27,7 @@ void AEnemy::Tick( float DeltaTime )
 	Super::Tick( DeltaTime );
 }
 
-Enemy_Type AEnemy::Get_Type()
+State_Type AEnemy::Get_Type()
 {
 	return m_eEnemy_Type;
 }
@@ -48,6 +50,16 @@ int AEnemy::Get_Hp()
 	return m_iHp;
 }
 
+int AEnemy::Get_Dagame()
+{
+	return m_iDamage;
+}
+
+bool AEnemy::Get_Shoot()
+{
+	return m_bShoot;
+}
+
 void AEnemy::Set_Hp(int iHp)
 {
 	m_iHp = iHp;
@@ -58,9 +70,14 @@ void AEnemy::Set_Damage(int iDamage)
 	m_iHp -= iDamage;
 }
 
-void AEnemy::Set_EnemyType(Enemy_Type eEnemyType)
+void AEnemy::Set_EnemyType(State_Type eEnemyType)
 {
 	m_eEnemy_Type = eEnemyType;
+}
+
+void AEnemy::Set_Shoot(bool bShoot)
+{
+	m_bShoot = bShoot;
 }
 
 bool AEnemy::Booster_Delay()
@@ -70,6 +87,20 @@ bool AEnemy::Booster_Delay()
 	if (m_fBoosterTime <= 0)
 	{
 		m_fBoosterTime = m_fOriBoosterTime;
+
+		return true;
+	}
+
+	return false;
+}
+
+bool AEnemy::Shoot_Delay()
+{
+	m_fShootDelay -= GetWorld()->DeltaTimeSeconds;
+
+	if (m_fShootDelay <= 0)
+	{
+		m_fShootDelay = m_fOriShootDelay;
 
 		return true;
 	}

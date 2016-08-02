@@ -2,31 +2,59 @@
 
 #pragma once
 
-#include "AllianceManager.h"
-#include "EnemyGroupManager.h"
+#include "GameFramework/Actor.h"
+#include "AIManager.generated.h"
 
-/**
- * 
- */
-class SPACE_REDEMPTION_API AIManager
+UENUM(BlueprintType)
+enum class EUnit_Type : uint8
 {
+	UNIT_ALLIANCE	UMETA(DisplayName = "Unit_Alliance"),
+	UNIT_ENEMEY	UMETA(DisplayName = "Unit_Enemy"),
+	UNIT_END	UMETA(DisplayName = "Unit_End")
+};
+
+UCLASS()
+class SPACE_REDEMPTION_API AAIManager : public AActor
+{
+	GENERATED_BODY()
+public:	
+	// Sets default values for this actor's properties
+	AAIManager();
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+	// Called every frame
+	virtual void Tick( float DeltaSeconds ) override;
 public:
-	enum Unit_Type { Unit_Alliance, Unit_Enemy, Unit_End};
-public:
-	AIManager();
-	~AIManager();
-public:		// Get
-	TArray<class AAlliance*>*			Get_Alliance(void);
-	TArray<class AEnemy*>*				Get_Enemy(void);
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	bool								Get_Shoot();
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	TArray<class AAlliance*>			Get_Alliance();
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	TArray<class AEnemy*>				Get_Enemy();
 public:		// Set
-	void Set_Alliance(TArray<class AAlliance*>* pAllianceArray);
-	void Set_Enemy(TArray<class AEnemy*>* pEnamyArray);
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	void	Set_Alliance(TArray<class AAlliance*> pAllianceArray);
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	void	Set_Enemy(TArray<class AEnemy*> pEnamyArray);
+public:		// Get
+public:		// Battle
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	void	AI_Battle();
+	void	AI_Shoot(EUnit_Type eUnitType, int index);
 public:		// AI
-	void	ForwardMove_Array(Unit_Type eUnitType, float& DeltaTimeSeconds, float& fSpeed);
-	void	Trace_Array(Unit_Type eUnitType, FVector* pTracePosition, float& DeltaTimeSeconds, float& fSpeed, int& iIndex);
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	void	Trace(EUnit_Type eUnitType, float fSpeed);
+public:		// Formation
+	void	Triangle(EUnit_Type eUnit_Type);
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+	float									m_fDistance;
 private:
 	TArray<class AAlliance*>				m_AlliacneArray;
 	TArray<class AEnemy*>					m_EnemyArray;
 	typedef TArray<class AAlliance*>		AALIANCEARRAY;
 	typedef TArray<class AEnemy*>			ENEMYARRAY;
+private:
+	float									m_fGroupSpace;
+	bool									m_bShootCheck;
 };

@@ -22,9 +22,9 @@ void AMissileSystem::Tick( float DeltaTime )
 	Super::Tick( DeltaTime );
 }
 
-void AMissileSystem::Insert_Missile(class AActor* pMissile)
+void AMissileSystem::Insert_Missile(TArray<class AMissile*> Missile)
 {
-	m_MissileArray.Add(pMissile);
+	m_MissileArray = Missile;
 }
 
 bool AMissileSystem::Get_EnemyArray()
@@ -35,7 +35,7 @@ bool AMissileSystem::Get_EnemyArray()
 	return false;
 }
 
-TArray<class AActor*> AMissileSystem::Get_MissileArray()
+TArray<class AMissile*> AMissileSystem::Get_MissileArray()
 {
 	return m_MissileArray;
 }
