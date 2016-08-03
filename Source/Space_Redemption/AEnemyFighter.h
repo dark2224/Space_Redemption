@@ -27,6 +27,9 @@ private:
 	float _EvasionTime;
 	float _EvasionRange;
 	float _LifeTimeAfterEvasion;
+protected:
+	UPROPERTY(BlueprintReadWrite, Category = "Gogetter")
+		bool MissileFlag;
 public:
 	AAEnemyFighter();
 	virtual void BeginPlay() override;

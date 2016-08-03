@@ -22,11 +22,10 @@ void AEnemySpawner::BeginPlay()
 // Called every frame
 void AEnemySpawner::Tick(float DeltaTime)
 {
+	Super::Tick(DeltaTime);
 	if (!_Activated)
 		return;
-	Super::Tick(DeltaTime);
 	_ElapsedTime += DeltaTime;
-
 }
 void AEnemySpawner::ActivateSpawner() {
 	_Activated = true;

@@ -5,6 +5,7 @@
 
 AAEnemyFighter::AAEnemyFighter() {
 	PrimaryActorTick.bCanEverTick = true;
+	MissileFlag = false;
 }
 void AAEnemyFighter::BeginPlay()
 {
@@ -16,7 +17,10 @@ void AAEnemyFighter::Tick(float DeltaTime)
 	switch (_Status) {
 	case Approaching:
 		if ((GetActorLocation() - _target->GetActorLocation()).Size() < _EncounterRange)
+		{
 			_Status = Firing; // 여기서 정면방향으로 총알 발사시작하면 됨.
+			MissileFlag = true;
+		}
 		break;
 	case Firing:
 		if ((GetActorLocation() - _target->GetActorLocation()).Size() < _EvasionRange)
