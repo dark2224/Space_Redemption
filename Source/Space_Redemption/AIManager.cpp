@@ -53,28 +53,6 @@ void AAIManager::Set_Enemy(TArray<class AEnemy*> pEnamyArray)
 	m_EnemyArray = pEnamyArray;
 }
 
-void AAIManager::AI_Battle()
-{
-	/*if (m_EnemyArray.Num() <= 0)
-		return;
-
-	if (m_AlliacneArray.Num() <= 0)
-		return;
-
-	for (int index = 0; index < m_AlliacneArray.Num(); ++index)
-	{
-		if(m_EnemyArray.Num() < index)
-			break;
-
-		AI_Shoot(index);
-	}*/
-}
-
-void AAIManager::AI_Shoot(EUnit_Type eUnitType, int index)
-{
-
-}
-
 void AAIManager::Trace(EUnit_Type eUnitType, float fSpeed)
 {
 	if (m_EnemyArray.Num() <= 0)
@@ -89,28 +67,7 @@ void AAIManager::Trace(EUnit_Type eUnitType, float fSpeed)
 
 	float				fDistance(0.0f);
 
-	/*if (EUnit_Type::UNIT_ALLIANCE == eUnitType)
-	{
-		for (int index = 0; index < m_AlliacneArray.Num(); ++index)
-		{
-			if(m_EnemyArray.Num() < index)
-				break;
-
-			fDistance = FMath::Abs(FVector::Dist(m_EnemyArray[index]->GetActorLocation(), m_AlliacneArray[index]->GetActorLocation()));
-
-			if (fDistance >= m_fDistance)
-				break;
-
-			vPosition = m_AlliacneArray[index]->GetActorLocation();
-
-			vTracePosition = m_EnemyArray[index]->GetActorLocation() - m_AlliacneArray[index]->GetActorLocation();
-			vTracePosition.GetSafeNormal();
-			vPosition += vTracePosition * GetWorld()->DeltaTimeSeconds * fSpeed;
-			m_AlliacneArray[index]->SetActorLocation(vPosition);
-		}
-	}*/
-
-	/*else */if (EUnit_Type::UNIT_ENEMEY == eUnitType)
+	if (EUnit_Type::UNIT_ENEMEY == eUnitType)
 	{
 		for (int index = 0; index < m_EnemyArray.Num(); ++index)
 		{
@@ -140,53 +97,4 @@ void AAIManager::Trace(EUnit_Type eUnitType, float fSpeed)
 			}
 		}
 	}
-}
-
-void AAIManager::Triangle(EUnit_Type eUnit_Type)
-{
-	/*
-	ARRAYACTOR::TIterator			iter_begin = TarrayActor[0];
-
-	FVector		VecPosition = (*iter_begin)->GetActorLocation();
-	FVector		VecSpacePosition(0, 0, 0);
-
-	int								iIndex(0);
-	int								iCount(0);
-	int								iAddValue(1);
-	float							fSpcaceCal(0.0f);
-
-	++iter_begin;
-
-	for (int index = 0; index != TarrayActor->Num(); ++index)
-	{
-		if (0 == iIndex)
-	{
-		++iIndex;
-		continue;
-	}
-
-	fSpcaceCal = m_fSpace * iAddValue;
-
-	if (iIndex & 1)
-	{
-		VecSpacePosition = FVector(VecPosition.X - fSpcaceCal, VecPosition.Y - fSpcaceCal, VecPosition.Z);
-		++iCount;
-	}
-
-	else
-	{
-		VecSpacePosition = FVector(VecPosition.X - fSpcaceCal, VecPosition.Y + fSpcaceCal, VecPosition.Z);
-		++iCount;
-	}
-
-	(*iter_begin)->SetActorLocation(VecSpacePosition);
-
-	if (iCount >= 2)
-	{
-		++iAddValue;
-		iCount = 0;
-	}
-
-	++iIndex;
-	++iter_begin;*/
 }

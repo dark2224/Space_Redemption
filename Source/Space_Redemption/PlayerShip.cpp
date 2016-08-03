@@ -78,13 +78,13 @@ void APlayerShip::Tick(float DeltaTime)
 		CurrentRotationSpeed.Pitch = fmax(0, CurrentRotationSpeed.Pitch);
 	SetActorRotation(GetActorRotation() + DeltaTime*FRotator(CurrentRotationSpeed.Pitch, CurrentRotationSpeed.Yaw, 0));
 	//ÀüÁø
-	if (IsAccelerating)
-		CurrentSpeed += DeltaTime*Acceleration;
-	else
-		if (CurrentSpeed > DeltaTime*Decceleration)
-			CurrentSpeed -= DeltaTime*Decceleration;
-		else
-			CurrentSpeed = 0;
+	//if (IsAccelerating)
+	//	CurrentSpeed += DeltaTime*Acceleration;
+	//else
+	//	if (CurrentSpeed > DeltaTime*Decceleration)
+	//		CurrentSpeed -= DeltaTime*Decceleration;
+	//	else
+	//		CurrentSpeed = 0;
 	// Àü¹æ¹æÇâ ÀÌµ¿
 	// ¿¢¼¿ ¹â°í ÀÖÀ»¶§
 	if (HandleStick->GetisPushingSecond())
@@ -95,7 +95,7 @@ void APlayerShip::Tick(float DeltaTime)
 	{
 		CurrentSpeed = (CurrentSpeed - DeltaTime*Decceleration < 0) ? 0 : CurrentSpeed - DeltaTime*Decceleration;
 	}
-	AddActorLocalOffset(FVector(CurrentSpeed, 0, 0));
+	AddActorLocalOffset(FVector(CurrentSpeed*DeltaTime, 0, 0));
 	//AddActorLocalRotation((DeltaTime*CurrentRotationSpeed).Quaternion());
 	//AddActorWorldRotation(FRotator(0,0,GetActorRotation().Roll));
 	//SetActorRotation(FRotator(GetActorRotation().Pitch, GetActorRotation().Yaw,0.0f));

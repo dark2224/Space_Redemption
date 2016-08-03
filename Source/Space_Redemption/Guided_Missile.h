@@ -26,13 +26,13 @@ public:
 	void Set_Position(TArray<FVector> Position);
 	UFUNCTION(BlueprintCallable, Category = "Guided_Missile")
 	void Set_Distance(float fDistance);
+	UFUNCTION(BlueprintCallable, Category = "Guided_Missile")
+	void Set_ParabolaTime(float fTime);
 public:
 	UFUNCTION(BlueprintCallable, Category = "Guided_Missile")
 	void							Trace_Enemy();
 	UFUNCTION(BlueprintCallable, Category = "Guided_Missile")
 	void							Missile_Move(int iIndex);
-	UFUNCTION(BlueprintCallable, Category = "Guided_Missile")
-	void							Second_Move();
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Guided_Missile")
 	float							m_fGravity;
@@ -42,8 +42,12 @@ public:
 	float							m_fParabolaTime;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Guided_Missile")
 	float							m_fRotationRoll;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Guided_Missile")
+	float							m_fForwardTime;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Guided_Missile")
+	float							m_fOriForwardTime;
 private:
-	void							Parabola(FVector* pOut, FVector StartPoistion, FVector EndPoisiton);
+	void							Parabola(int iIndex);
 private:
 	TArray<FVector>					m_VecPosition;
 private:

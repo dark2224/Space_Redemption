@@ -101,7 +101,7 @@ bool AAlliance::Shoot_Delay()
 	if (m_fShootDelay <= 0)
 	{
 		m_fShootDelay = m_fOriShootDelay;
-
+		
 		return true;
 	}
 

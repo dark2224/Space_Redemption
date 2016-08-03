@@ -23,20 +23,26 @@ void AAEnemyFighter::Tick(float DeltaTime)
 			_Status = Evading; // ¿©±â¼­ ÃÑ¾Ë¹ß»ç ¸ØÃß¸é µÊ.
 		break;
 	case Evading:
-		_ElapsedEvasionTime += DeltaTime;
-		if (_ElapsedEvasionTime > _EvasionTime) {
-			_ElapsedEvasionTime = _EvasionTime;
+		_ElapsedTime += DeltaTime;
+		if (_ElapsedTime > _EvasionTime) {
+			_ElapsedTime = _EvasionTime;
 			_Status = RunningAway;
 		}
 		SetActorRotation(_FirstRotation);
-		AddActorLocalRotation(_ElapsedEvasionTime / _EvasionTime*_EvasionDeltaRotator);
+		AddActorLocalRotation(_ElapsedTime / _EvasionTime*_EvasionDeltaRotator);
+		if (_Status == RunningAway) {
+			_ElapsedTime = 0.0;
+		}
 		break;
 	case RunningAway:
+		_ElapsedTime += DeltaTime;
+		if (_ElapsedTime > _LifeTimeAfterEvasion)
+			Destroy();
 		break;
 	}
 	AddActorWorldOffset(GetActorForwardVector()*_Speed*DeltaTime);
 }
-void AAEnemyFighter::SetStategy(AActor* target, float Speed, FRotator LastEvasionDeltaRotator, float EncounterRange, float EvasionRange, float EvasionTime)
+void AAEnemyFighter::SetStategy(AActor* target, float Speed, FRotator LastEvasionDeltaRotator, float EncounterRange, float EvasionRange, float EvasionTime, float LifeTimeAfterEvasion)
 {
 	_FirstRotation = FRotationMatrix::MakeFromX(target->GetActorLocation() - GetActorLocation()).Rotator();
 	_target = target;
@@ -45,6 +51,6 @@ void AAEnemyFighter::SetStategy(AActor* target, float Speed, FRotator LastEvasio
 	_EncounterRange = EncounterRange;
 	_EvasionRange = EvasionRange;
 	_EvasionTime = EvasionTime;
-
+	_LifeTimeAfterEvasion = LifeTimeAfterEvasion;
 	SetActorRotation(_FirstRotation);
 }

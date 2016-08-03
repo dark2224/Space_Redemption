@@ -14,9 +14,9 @@ private:
 	FRotator CurrentRotationSpeed = FRotator(0.0f,0.0f,0.0f);
 	FRotator TargetRotationSpeed = FRotator(0.0f, 0.0f, 0.0f);
 	float CurrentSpeed;
-	const float MaxSpeed = 21;
-	const float Acceleration = 30;
-	const float Decceleration = 20;
+	const float MaxSpeed = 300.0f;
+	const float Acceleration = 80.0f;
+	const float Decceleration = 100;
 	const float RotationAcceleration = 20;
 	const float RotationDeccelration = 20;
 	const float MaxRotationspeed = 10;

@@ -21,29 +21,34 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 public:
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
-		State_Type	Get_Type();
+		State_Type		Get_Type();
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
-		bool		Get_Delay();
+		bool			Get_Delay();
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
-		int			Get_Hp();
+		int				Get_Hp();
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
-		int			Get_Dagame();
+		int				Get_Dagame();
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
-		bool		Get_Shoot();
+		bool			Get_Shoot();
 public:
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
-		void Set_Hp(int iHp);
+		void			Set_Hp(int iHp);
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
-		void Set_Damage(int iDamage);
+		void			Set_Damage(int iDamage);
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
-		void Set_EnemyType(State_Type eEnemyType);
+		void			Set_EnemyType(State_Type eEnemyType);
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
 		void			Set_Shoot(bool bShoot);
+	UFUNCTION(BlueprintCallable, Category = "Enemy")
+		void			Set_Respawn(float fRespawn);
 public:
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
-		bool	Booster_Delay();
-	UFUNCTION(BlueprintCallable, Category = "Alliance")
+		bool			Booster_Delay();
+	UFUNCTION(BlueprintCallable, Category = "Enemy")
 		bool			Shoot_Delay();
+public:
+	UFUNCTION(BlueprintCallable, Category = "Enemy")
+		bool			Respawn(float fDistance);
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
 	float									m_fDelay;
@@ -56,12 +61,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
 	float									m_fOriShootDelay;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
-	int										m_iHp;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
 	int										m_iDamage;
 private:
 	State_Type								m_eEnemy_Type;
 private:
+	float									m_fRespawn;
+	float									m_fOriRespawn;
 	float									m_fTime;
+	int										m_iHp;
+	int										m_iOriHp;
 	bool									m_bShoot;
 };

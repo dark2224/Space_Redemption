@@ -36,16 +36,9 @@ public:		// Set
 	void	Set_Alliance(TArray<class AAlliance*> pAllianceArray);
 	UFUNCTION(BlueprintCallable, Category = "AI")
 	void	Set_Enemy(TArray<class AEnemy*> pEnamyArray);
-public:		// Get
-public:		// Battle
-	UFUNCTION(BlueprintCallable, Category = "AI")
-	void	AI_Battle();
-	void	AI_Shoot(EUnit_Type eUnitType, int index);
 public:		// AI
 	UFUNCTION(BlueprintCallable, Category = "AI")
 	void	Trace(EUnit_Type eUnitType, float fSpeed);
-public:		// Formation
-	void	Triangle(EUnit_Type eUnit_Type);
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 	float									m_fDistance;

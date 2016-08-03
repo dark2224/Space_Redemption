@@ -7,7 +7,8 @@
 AGuided_Missile::AGuided_Missile()
 	: m_fGravity(0.0f),			m_fPower(0.0f)
 	, m_fParabolaTime(0.0f),	m_fTime(0.0f)
-	, m_fRotationRoll(0.0f),	m_fAngle(0.0f)
+	, m_fRotationRoll(0.0f),	m_fForwardTime(0.0f)
+	, m_fOriForwardTime(0.0f),	m_fAngle(0.0f)
 	, m_fDistance(0.0f)
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -33,6 +34,16 @@ void AGuided_Missile::Set_Enemy(TArray<class AEnemy*> EnemyArray)
 void AGuided_Missile::Set_Position(TArray<FVector> Position)
 {
 	m_VecPosition = Position;
+
+	int		iCount = 0;
+
+	for (int index = 0; index < m_MissileArray.Num(); ++index)
+	{
+		m_MissileArray[index]->SetActorLocation(m_VecPosition[index]);
+
+		if(index + 1 < m_MissileArray.Num())
+			m_MissileArray[index + 1]->SetActorLocation(m_VecPosition[index]);
+	}
 }
 
 void AGuided_Missile::Set_Distance(float fDistance)
@@ -40,31 +51,51 @@ void AGuided_Missile::Set_Distance(float fDistance)
 	m_fDistance = fDistance;
 }
 
+void AGuided_Missile::Set_ParabolaTime(float fTime)
+{
+	m_fTime = fTime;
+}
+
 // 유도 미사일이 Enemy Trace 시작
 void AGuided_Missile::Trace_Enemy()
 {
-	for (int index = 0; index < m_EnemyArray.Num() * 2; ++index)
+	for (int index = 0; index < m_EnemyArray.Num(); ++index)
 			Missile_Move(index);
+
+	m_fForwardTime -= GetWorld()->DeltaTimeSeconds;
+
+	if (m_fForwardTime <= 0)
+		m_fForwardTime = m_fOriForwardTime;
 }
 
 // MMissile Trace Function
 void AGuided_Missile::Missile_Move(int iIndex)
 {
-	
+	if (m_fForwardTime > 0)
+	{
+		FVector		vPosition = m_MissileArray[iIndex]->GetActorLocation();
+		vPosition.X += GetWorld()->DeltaTimeSeconds * m_fDistance;
+		m_MissileArray[iIndex]->SetActorLocation(vPosition);
+	}
+
+	else
+		Parabola(iIndex);
 }
 
-void AGuided_Missile::Second_Move()
+void AGuided_Missile::Parabola(int iIndex)
 {
+	m_fTime += GetWorld()->DeltaTimeSeconds;
 
-}
+	FVector			vTracePosition(0.0f, 0.0f, 0.0f);
 
-void AGuided_Missile::Parabola(FVector* pOut, FVector StartPoistion, FVector EndPoisiton)
-{
-	FVector		vTrace(0.0f, 0.0f, 0.0f);
+	vTracePosition = m_EnemyArray[iIndex]->GetActorLocation() - m_MissileArray[iIndex]->GetActorLocation();
+	vTracePosition = vTracePosition.GetSafeNormal();
 
-	vTrace = EndPoisiton - StartPoistion;
+	vTracePosition += vTracePosition * GetWorld()->DeltaTimeSeconds * m_MissileArray[iIndex]->Get_Speed();
 
-	vTrace = vTrace.GetSafeNormal();
+	m_fAngle = FVector::DotProduct(m_EnemyArray[iIndex]->GetActorLocation().GetSafeNormal(), m_MissileArray[iIndex]->GetActorLocation().GetSafeNormal());
 
-	m_fAngle = FVector::DotProduct(StartPoistion.GetSafeNormal(), EndPoisiton.GetSafeNormal());
+	m_fAngle = FMath::Acos(m_fAngle);
+
+	vTracePosition.Z += -FMath::Sin(m_fAngle) * m_fPower + (m_fGravity * m_fTime * m_fTime) * 0.5f;
 }
