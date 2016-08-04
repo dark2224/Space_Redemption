@@ -23,6 +23,8 @@ public:
 	bool					Get_StartCheck();
 	UFUNCTION(BlueprintCallable, Category = "Missile")
 	bool					BoosterDelay();
+	UFUNCTION(BlueprintCallable, Category = "Missile")
+	float					Get_Speed();
 public:
 	UFUNCTION(BlueprintCallable, Category = "Missile")
 	void					Set_Postion(FVector vPosition);
@@ -30,6 +32,8 @@ public:
 	void					Set_MaxTime(float fMaxTime);
 	UFUNCTION(BlueprintCallable, Category = "Missile")
 	void					Set_StartCheck(bool bStartCheck);
+	UFUNCTION(BlueprintCallable, Category = "Missile")
+	void					Set_MissileSpeed(float fMissileSpeed);
 public:
 	UFUNCTION(BlueprintCallable, Category = "Missile")
 	void					Initialize_Missile(float fSpeed, float fMaxTime, float fDelay);
@@ -41,7 +45,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Missile")
 	float					m_fBooster;
 public:			// Get
-	float					Get_Speed();
 	float					Get_MaxTime();
 	float					Get_Delay();
 public:			// Set

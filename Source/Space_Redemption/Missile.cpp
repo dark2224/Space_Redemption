@@ -53,6 +53,11 @@ bool AMissile::BoosterDelay()
 	return false;
 }
 
+float AMissile::Get_Speed()
+{
+	return m_fMissileSpeed;
+}
+
 void AMissile::Set_Postion(FVector vPosition)
 {
 	m_vOriPosition = vPosition;
@@ -70,17 +75,17 @@ void AMissile::Set_StartCheck(bool bStartCheck)
 	m_bStartCheck = bStartCheck;
 }
 
+void AMissile::Set_MissileSpeed(float fMissileSpeed)
+{
+	m_fMissileSpeed = fMissileSpeed;
+}
+
 void AMissile::Initialize_Missile( float fSpeed, float fMaxTime, float fDelay)
 {
 	m_fMissileSpeed = fSpeed;
 	m_fMaxTime = fMaxTime;
 	m_fOriDelay = fDelay;
 	m_fDelay = fDelay;
-}
-
-float AMissile::Get_Speed()
-{
-	return m_fMissileSpeed;
 }
 
 float AMissile::Get_MaxTime()

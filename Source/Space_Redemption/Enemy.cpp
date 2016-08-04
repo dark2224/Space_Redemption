@@ -123,12 +123,12 @@ bool AEnemy::Respawn(float fDistance)
 
 	m_fRespawn -= GetWorld()->DeltaTimeSeconds;
 	vPosition.X += fDistance * GetWorld()->DeltaTimeSeconds;
+	SetActorLocation(vPosition);
 
 	if (m_fRespawn <= 0)
 	{
 		m_iHp = m_iOriHp;
 		m_fRespawn = m_fOriRespawn;
-		SetActorLocation(vPosition);
 
 		return true;
 	}

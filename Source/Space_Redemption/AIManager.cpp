@@ -10,7 +10,8 @@
 // Sets default values
 AAIManager::AAIManager()
 	: m_fDistance(0.0f),		m_fGroupSpace(0.0f)
-	, m_bShootCheck(false)
+	, m_bShootCheck(false),		m_iArrayIndex(0)
+	, m_fAngle(0.0f)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
@@ -83,18 +84,47 @@ void AAIManager::Trace(EUnit_Type eUnitType, float fSpeed)
 				vTracePosition = m_AlliacneArray[index]->GetActorLocation() - m_EnemyArray[index]->GetActorLocation();
 				vTracePosition.GetSafeNormal();
 				vPosition += vTracePosition * GetWorld()->DeltaTimeSeconds * fSpeed;
-				vPosition.Z = m_AlliacneArray[index]->GetActorLocation().Z;
 				m_EnemyArray[index]->SetActorLocation(vPosition);
 
 				m_AlliacneArray[index]->Set_Shoot(false);
 				m_EnemyArray[index]->Set_Shoot(false);
 			}
 
-			else if( fDistance < m_fDistance)
+			else if (fDistance < m_fDistance)
 			{
 				m_AlliacneArray[index]->Set_Shoot(true);
 				m_EnemyArray[index]->Set_Shoot(true);
 			}
 		}
 	}
+}
+
+FVector AAIManager::Trace_Missile(EUnit_Type eUnitType)
+{
+	FVector				vPosition(0.0f, 0.0f, 0.0f);
+
+	if (m_iArrayIndex >= m_AlliacneArray.Num() || m_iArrayIndex >= m_EnemyArray.Num())
+		m_iArrayIndex = 0;
+
+	m_fAngle = FVector::DotProduct(m_EnemyArray[m_iArrayIndex]->GetActorLocation(), m_AlliacneArray[m_iArrayIndex]->GetActorLocation());
+	m_fAngle = FMath::Acos(m_fAngle);
+
+	if (m_EnemyArray[m_iArrayIndex]->GetActorLocation().Y > m_AlliacneArray[m_iArrayIndex]->GetActorLocation().Y)
+		m_fAngle = 2 * PI - m_fAngle;
+
+	if (EUnit_Type::UNIT_ALLIANCE == eUnitType)
+	{
+		vPosition = m_EnemyArray[m_iArrayIndex]->GetActorLocation() - m_AlliacneArray[m_iArrayIndex]->GetActorLocation();
+		vPosition.GetSafeNormal();
+	}
+
+	else if (EUnit_Type::UNIT_ENEMEY == eUnitType)
+	{
+		vPosition = m_AlliacneArray[m_iArrayIndex]->GetActorLocation() - m_EnemyArray[m_iArrayIndex]->GetActorLocation();
+		vPosition.GetSafeNormal();
+	}
+	
+	++m_iArrayIndex;
+
+	return vPosition;
 }

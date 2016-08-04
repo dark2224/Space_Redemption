@@ -39,9 +39,13 @@ public:		// Set
 public:		// AI
 	UFUNCTION(BlueprintCallable, Category = "AI")
 	void	Trace(EUnit_Type eUnitType, float fSpeed);
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	FVector	Trace_Missile(EUnit_Type eUnitType);
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 	float									m_fDistance;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+	float									m_fAngle;
 private:
 	TArray<class AAlliance*>				m_AlliacneArray;
 	TArray<class AEnemy*>					m_EnemyArray;
@@ -50,4 +54,5 @@ private:
 private:
 	float									m_fGroupSpace;
 	bool									m_bShootCheck;
+	int										m_iArrayIndex;
 };
