@@ -55,7 +55,7 @@ void UHand::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 		else
 		{
 			//SetRelativeLocation(_RealHandScene->RelativeLocation + _ArmLength*(_RealHandScene->RelativeLocation - _ShoulderScene->RelativeLocation));
-			SetWorldLocation(_RealHandScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal());
+			SetWorldLocation(_ShoulderScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal());
 			//FollowTargetWithSpeed(_ShoulderScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal(), DeltaTime);
 		}
 		FollowTargetWithSpeed(FRotationMatrix::MakeFromX((GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal()).Rotator() + FRotator(90, 90, 0), DeltaTime);
@@ -75,7 +75,7 @@ void UHand::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 		else
 		{
 			//SetRelativeLocation(_RealHandScene->RelativeLocation + _ArmLength*(_RealHandScene->RelativeLocation - _ShoulderScene->RelativeLocation));
-			SetWorldLocation(_RealHandScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal());
+			SetWorldLocation(_ShoulderScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal());
 			//FollowTargetWithSpeed(_ShoulderScene->GetComponentLocation() + _ArmLength*(_RealHandScene->GetComponentLocation() - _ShoulderScene->GetComponentLocation()).GetSafeNormal(),DeltaTime);
 		}
 		SetRelativeRotation(TargetTangibleActor->GetRotatorBeforeApproach());
